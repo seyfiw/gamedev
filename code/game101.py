@@ -12,12 +12,12 @@ class GameWidget(Widget):
         self._keyboard.bind(on_key_down=self._on_keyboard_down)
         self._keyboard.bind(on_key_up=self._on_keyboard_up)
         
-        self.map_size = (2000, 2000)  
+        self.map_size = (1024, 1024)  
         self.player_position = [self.map_size[0] // 2, self.map_size[1] // 2]  
         
         with self.canvas:
-            self.background = Rectangle(source="background.png", pos=(0, 0), size=self.map_size)
-            self.player = Rectangle(source="removed-background.png", pos=(Window.width // 2 - 50, Window.height // 2 - 50), size=(100, 100))
+            self.background = Rectangle(source="image/map1.png", pos=(0, 0), size=self.map_size)
+            self.player = Rectangle(source="image/removed-background.png", pos=(Window.width // 2 - 50, Window.height // 2 - 50), size=(32, 32))
        
         self._keyPressed = set()
         Clock.schedule_interval(self.update, 1/60)
