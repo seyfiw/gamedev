@@ -1,6 +1,4 @@
-from kivy.app import App
 from kivy.uix.widget import Widget
-
 from kivy.core.window import Window
 from kivy.clock import Clock
 from kivy.vector import Vector
@@ -14,7 +12,6 @@ class GameWidget(Widget):
         self._keyboard.bind(on_key_down=self._on_keyboard_down)
         self._keyboard.bind(on_key_up=self._on_keyboard_up)
         
-        
         self.map_size = (10240, 10240)
         self.player_position = [self.map_size[0] // 2, self.map_size[1] // 2]
         
@@ -23,11 +20,8 @@ class GameWidget(Widget):
         self.add_widget(self.background)
         self.add_widget(self.player)
 
-        
         self._keyPressed = set()
         Clock.schedule_interval(self.update, 1/60)
-        
-        
 
     def _on_keyboard_closed(self):
         self._keyboard.unbind(on_key_down=self._on_keyboard_down)
@@ -70,13 +64,3 @@ class GameWidget(Widget):
             self.player_position[0] + self.background.pos[0], 
             self.player_position[1] + self.background.pos[1]
         )
-        
-        
-
-class MyApp(App):
-    def build(self):
-        return GameWidget()
-
-if __name__ == "__main__":
-    app = MyApp()
-    app.run()
