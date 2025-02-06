@@ -1,5 +1,5 @@
 from kivy.app import App
-from game_widget import GameWidget   
+from game_widget import *
 
 class MyApp(App):
     def build(self):

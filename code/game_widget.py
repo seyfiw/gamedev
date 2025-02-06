@@ -3,6 +3,7 @@ from kivy.core.window import Window
 from kivy.clock import Clock
 from kivy.vector import Vector
 from kivy.uix.image import Image
+from kivy.graphics import Rectangle
 
 class GameWidget(Widget):
     def __init__(self, **kwargs):
@@ -15,10 +16,14 @@ class GameWidget(Widget):
         self.map_size = (10240, 10240)
         self.player_position = [self.map_size[0] // 2, self.map_size[1] // 2]
         
+        with self.canvas:
+            self.block = Rectangle(pos=(50,50), size=(64, 64))
+        
         self.background = Image(source="image/map1-2.png", size=self.map_size)
         self.player = Image(source="image/removed-background.png", size=(64, 64))
         self.add_widget(self.background)
         self.add_widget(self.player)
+        self.add_widget(self.block)
 
         self._keyPressed = set()
         Clock.schedule_interval(self.update, 1/60)
@@ -37,7 +42,7 @@ class GameWidget(Widget):
         self._keyPressed.discard(key)  
 
     def update(self, dt):
-        step_size = Vector(200 * dt, 200 * dt)
+        step_size = Vector(500 * dt, 500 * dt)
         
         if "w" in self._keyPressed:
             self.player_position = Vector(self.player_position) + Vector(0, step_size.y)
@@ -64,3 +69,4 @@ class GameWidget(Widget):
             self.player_position[0] + self.background.pos[0], 
             self.player_position[1] + self.background.pos[1]
         )
+        
