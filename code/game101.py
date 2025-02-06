@@ -15,17 +15,19 @@ class GameWidget(Widget):
         self._keyboard.bind(on_key_up=self._on_keyboard_up)
         
         
-        self.map_size = (1024, 1024)
+        self.map_size = (10240, 10240)
         self.player_position = [self.map_size[0] // 2, self.map_size[1] // 2]
         
-        self.background = Image(source="image/map1.png", size=self.map_size)
-        self.player = Image(source="image/removed-background.png", size=(32, 32))
+        self.background = Image(source="image/map1-2.png", size=self.map_size)
+        self.player = Image(source="image/removed-background.png", size=(64, 64))
         self.add_widget(self.background)
         self.add_widget(self.player)
 
         
         self._keyPressed = set()
         Clock.schedule_interval(self.update, 1/60)
+        
+        
 
     def _on_keyboard_closed(self):
         self._keyboard.unbind(on_key_down=self._on_keyboard_down)
@@ -68,6 +70,8 @@ class GameWidget(Widget):
             self.player_position[0] + self.background.pos[0], 
             self.player_position[1] + self.background.pos[1]
         )
+        
+        
 
 class MyApp(App):
     def build(self):
