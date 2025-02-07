@@ -3,9 +3,8 @@ from kivy.core.window import Window
 from kivy.clock import Clock
 from kivy.vector import Vector
 from kivy.uix.image import Image
-from kivy.graphics import Color, Rectangle
-from kivy.graphics import Rectangle as GraphicsRectangle
-
+from PIL import Image as PILImage
+import os
 
 class GameWidget(Widget):
     def __init__(self, **kwargs):
@@ -15,20 +14,24 @@ class GameWidget(Widget):
         self._keyboard.bind(on_key_down=self._on_keyboard_down)
         self._keyboard.bind(on_key_up=self._on_keyboard_up)
         
-        self.map_size = (10240, 10240)
+        map_path = "image/map1-4.png"
+        try:
+            with PILImage.open(map_path) as img:
+                self.map_size = img.size
+                print(f"Loaded map size: {self.map_size}")
+        except Exception as e:
+            print(f"Error loading map: {e}")
+            self.map_size = (10240, 10240)
+            
         self.player_position = [self.map_size[0] // 2, self.map_size[1] // 2]
-
-        self.background = Image(source="image/map1-2.png", size=self.map_size)
+        
+        self.background = Image(source=map_path, size=self.map_size)
+        self.collision_map = self.create_collision_map(map_path)
+        
         self.player = Image(source="image/removed-background.png", size=(64, 64))
         self.add_widget(self.background)
         self.add_widget(self.player)
         
-
-        self.black_box_position = [self.map_size[0] // 2 + 300, self.map_size[1] // 2 + 300]
-        with self.canvas:
-            Color(1, 0, 1, 1)  
-            self.black_rect = GraphicsRectangle(size=(100, 100), pos=self.black_box_position)
-
         self._keyPressed = set()
         Clock.schedule_interval(self.update, 1/60)
 
@@ -38,35 +41,76 @@ class GameWidget(Widget):
         self._keyboard = None
 
     def _on_keyboard_down(self, keyboard, keycode, text, modifiers):
-        key = keycode[1] if keycode[1] else text  
+        key = keycode[1] if keycode[1] else text
         self._keyPressed.add(key)
+        return True
 
     def _on_keyboard_up(self, keyboard, keycode):
         key = keycode[1] if keycode[1] else ""
-        self._keyPressed.discard(key)
+        if key in self._keyPressed:
+            self._keyPressed.remove(key)
+        return True
+
+    def create_collision_map(self, map_path):
+        """สร้าง collision map จากไฟล์ภาพ"""
+        try:
+            return PILImage.open(map_path).convert('RGBA')
+        except Exception as e:
+            print(f"Error creating collision map: {e}")
+            return None
+
+    def is_valid_position(self, x, y):
+        """ตรวจสอบว่าตำแหน่งที่จะเดินไปนั้นสามารถเดินได้หรือไม่"""
+        if not self.collision_map:
+            return True
+
+        try:
+            img_x = max(0, min(int(x), self.map_size[0] - 1))
+            img_y = max(0, min(int(self.map_size[1] - y), self.map_size[1] - 1))
+            
+            pixel = self.collision_map.getpixel((img_x, img_y))
+            is_opaque = pixel[3] >= 250  
+            
+            return is_opaque
+        except Exception as e:
+            print(f"Error checking position ({x}, {y}): {e}")
+            return False
 
     def update(self, dt):
-        step_size = Vector(1000 * dt, 1000 * dt)
+        step_size = Vector(500 * dt, 500 * dt) 
+        new_position = Vector(self.player_position)
+        old_position = Vector(self.player_position)
 
-
+       
         if "w" in self._keyPressed:
-            self.player_position = Vector(self.player_position) + Vector(0, step_size.y)
+            new_position += Vector(0, step_size.y)
         if "s" in self._keyPressed:
-            self.player_position = Vector(self.player_position) - Vector(0, step_size.y)
+            new_position -= Vector(0, step_size.y)
         if "a" in self._keyPressed:
-            self.player_position = Vector(self.player_position) - Vector(step_size.x, 0)
+            new_position -= Vector(step_size.x, 0)
         if "d" in self._keyPressed:
-            self.player_position = Vector(self.player_position) + Vector(step_size.x, 0)
+            new_position += Vector(step_size.x, 0)
 
+        
+        player_size = self.player.size
+        check_points = [
+            (new_position[0], new_position[1]), 
+            (new_position[0] + player_size[0], new_position[1]),  
+            (new_position[0], new_position[1] + player_size[1]),  
+            (new_position[0] + player_size[0], new_position[1] + player_size[1]),  
+            (new_position[0] + player_size[0]/2, new_position[1] + player_size[1]/2)  
+        ]
 
-        self.collision("horizontal")
+       
+        can_move = all(self.is_valid_position(x, y) for x, y in check_points)
 
-        self.collision("vertical")
-
-
-        self.player_position[0] = max(0, min(self.map_size[0] - self.player.size[0], self.player_position[0]))
-        self.player_position[1] = max(0, min(self.map_size[1] - self.player.size[1], self.player_position[1]))
-
+        if can_move:
+            self.player_position = [
+                max(0, min(self.map_size[0] - player_size[0], new_position[0])),
+                max(0, min(self.map_size[1] - player_size[1], new_position[1]))
+            ]
+        else:
+            self.player_position = old_position
 
         camera_offset_x = Window.width // 2 - self.player_position[0] - self.player.size[0] // 2
         camera_offset_y = Window.height // 2 - self.player_position[1] - self.player.size[1] // 2
@@ -81,46 +125,3 @@ class GameWidget(Widget):
             self.player_position[0] + self.background.pos[0], 
             self.player_position[1] + self.background.pos[1]
         )
-
-
-        self.black_rect.pos = (
-            self.black_box_position[0] + self.background.pos[0], 
-            self.black_box_position[1] + self.background.pos[1]
-        )
-
-    def collision(self, direction):
-
-        player_rect = (
-            self.player.pos[0], 
-            self.player.pos[1], 
-            self.player.size[0], 
-            self.player.size[1]
-        )
-
-
-        black_rect = (
-            self.black_rect.pos[0], 
-            self.black_rect.pos[1], 
-            self.black_rect.size[0], 
-            self.black_rect.size[1]
-        )
-
-
-        if self._check_collision(player_rect, black_rect):
-            if direction == "horizontal":
-                if self.player_position[0] < self.black_box_position[0]:
-                    self.player_position[0] = self.black_box_position[0] - self.player.size[0]
-                else:
-                    self.player_position[0] = self.black_box_position[0] + self.black_rect.size[0]
-            elif direction == "vertical":
-                if self.player_position[1] < self.black_box_position[1]:
-                    self.player_position[1] = self.black_box_position[1] - self.player.size[1]
-                else:
-                    self.player_position[1] = self.black_box_position[1] + self.black_rect.size[1]
-
-    def _check_collision(self, player_rect, black_rect):
-
-        return not (player_rect[0] + player_rect[2] <= black_rect[0] or  
-                    player_rect[0] >= black_rect[0] + black_rect[2] or  
-                    player_rect[1] + player_rect[3] <= black_rect[1] or  
-                    player_rect[1] >= black_rect[1] + black_rect[3])  
