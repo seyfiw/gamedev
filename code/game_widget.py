@@ -13,11 +13,9 @@ class GameWidget(Widget):
         self.player = Player("../image/removed-background.png", self.map)
         self.camera = Camera(self.map, self.player)
 
-        # เพิ่มภาพพื้นหลังและตัวละครเข้าไปใน Widget
         self.add_widget(self.map.background)
         self.add_widget(self.player.sprite)
 
-        # พิมพ์ข้อความเพื่อตรวจสอบการโหลดภาพ
         print(f"Map background size: {self.map.background.size}")
         print(f"Player sprite size: {self.player.sprite.size}")
         print(f"Map background pos: {self.map.background.pos}")
@@ -29,7 +27,6 @@ class GameWidget(Widget):
         self.player.update(dt, self.keyboard.pressed_keys)
         self.camera.update()
 
-        # อัปเดตตำแหน่งของตัวละครตามตำแหน่งที่คำนวณได้
         self.player.sprite.pos = (
             self.player.position[0] + self.map.background.pos[0],
             self.player.position[1] + self.map.background.pos[1]
