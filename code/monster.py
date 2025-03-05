@@ -8,11 +8,12 @@ class Monster(Widget):
         super().__init__(**kwargs)
         self.screen_width = screen_width
         self.screen_height = screen_height
-        self.image = CoreImage("monster.png")
+        self.image = CoreImage("../image/monster.png")
         self.size = (self.image.width, self.image.height)
-        self.randomize_position()
         with self.canvas:
             self.rect = Rectangle(texture=self.image.texture, pos=self.pos, size=self.size)
+            
+        self.randomize_position()
 
     def randomize_position(self):
         self.pos = (random.randint(0, self.screen_width - self.width),

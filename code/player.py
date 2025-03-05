@@ -4,7 +4,7 @@ from kivy.clock import Clock
 
 class Player:
     def __init__(self, image_path, game_map):
-        self.sprite = Image(source=image_path, size=(64, 64))
+        self.sprite = Image(source=image_path, size=(64, 64), size_hint=(None, None))
         self.position = [game_map.size[0] // 2, game_map.size[1] // 2]  
         self.game_map = game_map
         self.animations = {
@@ -19,6 +19,8 @@ class Player:
         self.current_frame = 0
         self.animation_interval = 0.1 
         Clock.schedule_interval(self.update_animation, self.animation_interval)
+        
+    
 
 
     def update(self, dt, pressed_keys):
@@ -38,6 +40,7 @@ class Player:
             self.move_right()  
             self.facing_left = False
 
+        
         player_size = self.sprite.size
         check_points = [
             (new_position[0], new_position[1]), 
@@ -56,9 +59,12 @@ class Player:
             ]
             
     def update_animation(self, dt):
-        self.sprite.source = self.animations[self.current_animation][self.current_frame]
-        self.current_frame = (self.current_frame + 1) % len(self.animations[self.current_animation])  
+        self.current_frame += 1
+        if self.current_frame >= len(self.animations[self.current_animation]):
+            self.current_frame = 0
 
+        self.sprite.source = self.animations[self.current_animation][self.current_frame]
+        
     def move_left(self):
         self.current_animation = "walk_left"
 

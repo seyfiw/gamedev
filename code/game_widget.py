@@ -3,18 +3,22 @@ from kivy.clock import Clock
 from player import Player
 from map import Map
 from camera import Camera
+from monster import Monster
 from utils.keyboard import KeyboardManager
 
 class GameWidget(Widget):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.keyboard = KeyboardManager(self)
-        self.map = Map("../image/map1-4.png")
+        self.map = Map("../gamedev/image/map1-4.png")
         self.player = Player("../image/Wr1.png", self.map)
         self.camera = Camera(self.map, self.player)
 
         self.add_widget(self.map.background)
         self.add_widget(self.player.sprite)
+        
+        self.monster = Monster(screen_width=800, screen_height=600)  
+        self.add_widget(self.monster) 
 
         print(f"Map background size: {self.map.background.size}")
         print(f"Player sprite size: {self.player.sprite.size}")
