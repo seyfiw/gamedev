@@ -1,41 +1,16 @@
-import random
-from kivy.uix.widget import Widget
-from kivy.graphics import Rectangle
-from kivy.core.image import Image as CoreImage
+class Monster:
+    def __init__(self, name: str, spawn_point: tuple, image_path: str):
+        self.name = name
+        self.spawn_point = spawn_point
+        self.position = spawn_point
+        self.image_path = image_path
 
-class Monster(Widget):
-    def __init__(self, screen_width, screen_height, **kwargs):
-        super().__init__(**kwargs)
-        self.screen_width = screen_width
-        self.screen_height = screen_height
-        self.image = CoreImage("../image/monster.png")
-        self.size = (self.image.width, self.image.height)
-        with self.canvas:
-            self.rect = Rectangle(texture=self.image.texture, pos=self.pos, size=self.size)
-            
-        self.randomize_position()
+    def spawn(self) -> None:
+        print(f"{self.name} has spawned at {self.spawn_point} with image {self.image_path}")
 
-    def randomize_position(self):
-        self.pos = (random.randint(0, self.screen_width - self.width),
-                    random.randint(0, self.screen_height - self.height))
-        self.rect.pos = self.pos
+# Example usage
+monster1 = Monster("Goblin", (10, 20), "monster.png")
+monster1.spawn()
 
-    def on_pos(self, instance, value):
-        self.rect.pos = value
-
-# Example usage:
-# from kivy.app import App
-# from kivy.uix.floatlayout import FloatLayout
-#
-# class MonsterApp(App):
-#     def build(self):
-#         screen_width = 800
-#         screen_height = 600
-#         layout = FloatLayout()
-#         monster = Monster(screen_width, screen_height)
-#         layout.add_widget(monster)
-#         return layout
-#
-# if __name__ == '__main__':
-#     MonsterApp().run()
-# monster.draw(screen)
+monster2 = Monster("Orc", (5, 15), "monster.png")
+monster2.spawn()
