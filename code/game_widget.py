@@ -17,9 +17,15 @@ class GameWidget(Widget):
         self.add_widget(self.map.background)
         self.add_widget(self.player.sprite)
         
-        
-        
-
+        self.monsters = [
+            Monster("Goblin", (100, 200), "monster.png"),
+            Monster("Orc", (5, 15), "monster.png"),
+            Monster("Troll", (50, 75), "monster.png"),
+            Monster("Dragon", (300, 400), "monster.png"),
+            Monster("Vampire", (150, 250), "monster.png")
+        ]
+        for monster in self.monsters:
+            self.add_widget(monster) 
        
         Clock.schedule_interval(self.update, 1/60)
 
