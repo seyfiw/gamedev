@@ -17,14 +17,10 @@ class GameWidget(Widget):
         self.add_widget(self.map.background)
         self.add_widget(self.player.sprite)
         
-        self.monster = Monster(screen_width=800, screen_height=600)  
-        self.add_widget(self.monster) 
+        
+        
 
-        print(f"Map background size: {self.map.background.size}")
-        print(f"Player sprite size: {self.player.sprite.size}")
-        print(f"Map background pos: {self.map.background.pos}")
-        print(f"Player sprite pos: {self.player.sprite.pos}")
-
+       
         Clock.schedule_interval(self.update, 1/60)
 
     def update(self, dt):
