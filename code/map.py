@@ -28,3 +28,5 @@ class Map:
         except Exception as e:
             print(f"Error checking position ({x}, {y}): {e}")
             return False
+        
+    
