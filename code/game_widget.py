@@ -6,6 +6,7 @@ from camera import Camera
 from monster import Monster
 from utils.keyboard import KeyboardManager
 
+
 class GameWidget(Widget):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -16,7 +17,9 @@ class GameWidget(Widget):
 
         self.add_widget(self.map.background)
         self.add_widget(self.player.sprite)
-        
+       
+
+    
         self.monsters = [
             Monster("Goblin", (100, 200), "monster.png"),
             Monster("Orc", (5, 15), "monster.png"),
@@ -26,6 +29,9 @@ class GameWidget(Widget):
         ]
         for monster in self.monsters:
             self.add_widget(monster) 
+        
+        
+
        
         Clock.schedule_interval(self.update, 1/60)
 
