@@ -1,21 +1,25 @@
 from kivy.app import App
-from game_widget import GameWidget
-from join import MainMenu, PlayGame, OptionsMenu
 from kivy.uix.screenmanager import ScreenManager, Screen
+from game_widget import GameWidget
+from battle_screen import BattleScreen
 
-
-class MyscreenApp(App):
+class MyApp(App):
     def build(self):
         sm = ScreenManager()
-        sm.add_widget(MainMenu(name='menu'))
-        sm.add_widget(PlayGame(name='play'))
-        sm.add_widget(OptionsMenu(name='options'))
-        return sm
-    
-class MyGameApp(App):
-    def build(self):
-        return GameWidget()
 
+        #หน้า เกมหลัก
+        game_widget = GameWidget()
+        game_screen = Screen(name='game')
+        game_screen.add_widget(game_widget)
+        sm.add_widget(game_screen)
+
+        #หน้า Turn-Based Battle
+        battle_screen = BattleScreen(name='battle')
+        sm.add_widget(battle_screen)
+
+        game_widget.screen_manager = sm
+
+        return sm
 
 if __name__ == "__main__":
-    MyGameApp().run()
+    MyApp().run()

@@ -1,11 +1,15 @@
 from kivy.uix.widget import Widget
 from kivy.clock import Clock
 from kivy.core.window import Window
+from kivy.graphics import Rectangle
+from kivy.uix.screenmanager import ScreenManager
+from kivy.graphics import Rectangle
 from player import Player
 from map import Map
 from camera import Camera
 from monster import Monster
 from utils.keyboard import KeyboardManager
+
 
 class GameWidget(Widget):
     def __init__(self, **kwargs):
@@ -40,6 +44,34 @@ class GameWidget(Widget):
             self.add_widget(monster)
 
         Clock.schedule_interval(self.update, 1 / 60)
+        
+    def check_collision(self):
+        player_x, player_y = self.player.sprite.pos
+        player_width, player_height = self.player.sprite.size
+
+        for monster in self.monsters:
+            monster_x, monster_y = monster.pos
+            monster_width, monster_height = monster.size
+
+            if (player_x < monster_x + monster_width and
+                player_x + player_width > monster_x and
+                player_y < monster_y + monster_height and
+                player_y + player_height > monster_y):
+                self.start_turn_based_battle(monster)
+                break
+
+    def get_collision_rect(self, entity):
+
+        if hasattr(entity, 'sprite'):  # Player
+            return Window.Rect(entity.sprite.pos[0], entity.sprite.pos[1], entity.sprite.size[0], entity.sprite.size[1])
+        else:  # Monster
+            return Window.Rect(entity.pos[0], entity.pos[1], entity.size[0], entity.size[1])
+
+    def start_turn_based_battle(self, monster):
+        if self.screen_manager:
+            self.screen_manager.current = 'battle'
+            battle_screen = self.screen_manager.get_screen('battle')
+            battle_screen.start_battle(monster)
 
     def update(self, dt):
         if "walk_left" in self.keyboard.pressed_keys:
@@ -61,3 +93,6 @@ class GameWidget(Widget):
             self.player.position[0] + self.map.background.pos[0],
             self.player.position[1] + self.map.background.pos[1]
         )
+        
+        
+        self.check_collision()

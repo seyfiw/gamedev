@@ -52,6 +52,11 @@ class Player:
                 max(0, min(self.game_map.size[0] - player_size[0], new_position[0])),
                 max(0, min(self.game_map.size[1] - player_size[1], new_position[1]))
             ]
+            
+        self.sprite.pos = (
+            self.position[0] + self.game_map.background.pos[0],
+            self.position[1] + self.game_map.background.pos[1]
+        )
 
     def update_animation(self, dt):
         self.current_frame = (self.current_frame + 1) % len(self.animations[self.current_animation])
