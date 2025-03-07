@@ -32,7 +32,7 @@ class GameWidget(Widget):
             Monster("Orc", (map_center_x, map_center_y + 1600), "monster.png", self.map),
             Monster("Troll", (map_center_x - 1600, map_center_y), "monster.png", self.map),
             Monster("Dragon", (map_center_x, map_center_y - 1600), "monster.png", self.map),
-            Monster("Vampire", (map_center_x, map_center_y), "monster.png", self.map)
+            Monster("Vampire", (map_center_x + 500, map_center_y - 500), "monster.png", self.map)
         ]
         
         
