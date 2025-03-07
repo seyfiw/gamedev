@@ -28,7 +28,7 @@ class GameWidget(Widget):
         map_center_y = self.map.size[1] // 2
 
         self.monsters = [
-            Monster("Goblin", (map_center_x + 1500, map_center_y), "monster.png", self.map),
+            Monster("Goblin", (map_center_x + 1600, map_center_y), "monster.png", self.map),
             Monster("Orc", (map_center_x, map_center_y + 1500), "monster.png", self.map),
             Monster("Troll", (map_center_x - 1500, map_center_y), "monster.png", self.map),
             Monster("Dragon", (map_center_x, map_center_y - 1500), "monster.png", self.map),
