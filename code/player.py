@@ -4,7 +4,7 @@ from kivy.clock import Clock
 
 class Player:
     def __init__(self, image_path, game_map):
-        self.sprite = Image(source=image_path, size=(64, 64), size_hint=(None, None))
+        self.sprite = Image(source=image_path, size=(100, 100), size_hint=(None, None), allow_stretch=True, keep_ratio=False)
         self.position = [game_map.size[0] // 2, game_map.size[1] // 2]
         self.game_map = game_map
         self.animations = {

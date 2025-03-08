@@ -12,7 +12,10 @@ class Monster(Image):
         self.spawn_point = spawn_point 
         self.source = image_path
         self.size_hint = (None, None)
-        self.size = (50, 50)
+        self.size = (200, 200)
+        self.scale = 5.0
+        self.allow_stretch = True  # อนุญาตให้ขยายภาพ
+        self.keep_ratio = False  # ไม่ต้องรักษาอัตราส่วน
         self.game_map = game_map
         
         self.world_position = list(spawn_point)
@@ -36,14 +39,14 @@ class Monster(Image):
         Clock.schedule_interval(self.update_animation, self.animation_speed)
         
 
-        with self.canvas.after:
-            Color(1, 0, 0, 0.5)
-            self.rect = Rectangle(size=self.size, pos=self.pos)
+        #with self.canvas.after:
+        #    Color(1, 0, 0, 0.5)
+        #    self.rect = Rectangle(size=self.size, pos=self.pos)
             
         # เอาไว้ debug ก่อน
-        from kivy.uix.label import Label
-        self.label = Label(text=self.name, color=(1,1,1,1), pos=self.pos, size=self.size)
-        self.add_widget(self.label)
+        #from kivy.uix.label import Label
+        #self.label = Label(text=self.name, color=(1,1,1,1), pos=self.pos, size=self.size)
+        #self.add_widget(self.label)
         
         self.movement_range = 50  # ระยะห่างสูงสุดจากจุดเริ่มต้น
         self.movement_speed = 2  # ความเร็วในการเคลื่อนที่
@@ -149,5 +152,5 @@ class Monster(Image):
 
         if self.pos != new_pos:
             self.pos = new_pos
-            self.rect.pos = self.pos  
-            self.label.pos = new_pos  
+            #self.rect.pos = self.pos  
+            #self.label.pos = new_pos  
