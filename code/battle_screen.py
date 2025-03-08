@@ -96,3 +96,21 @@ class BattleScreen(Screen):
 
     def back_to_game(self, instance):
         self.parent.current = 'game'
+    def defend(self, instance):
+        self.message_label.text = "You defended against the monster's attack!"
+
+    def escape(self, instance):
+        self.message_label.text = "You escaped from the battle!"
+        self.parent.current = 'game'
+
+    def back_to_game(self, instance):
+        self.parent.current = 'game'
+        
+    def check_battle_result(self):
+        if self.monster.hp <= 0:
+            self.message_label.text = "You won the battle!"
+            self.give_rewards()
+            self.parent.current = 'game'
+        elif self.player.hp <= 0:
+            self.message_label.text = "You were defeated..."
+            self.parent.current = 'game'
