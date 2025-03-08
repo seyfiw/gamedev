@@ -46,6 +46,50 @@ class BattleScreen(Screen):
     def update_hp_labels(self):
         self.player_hp_label.text = f"Player HP: {self.player.hp}/{self.player.max_hp}"
         self.monster_hp_label.text = f"Monster HP: {self.monster.hp}/{self.monster.max_hp}"
+    #Mana
+    def update_mana_label(self):
+        self.mana_label.text = f"Mana: {self.player.mana}"
+    
+    #skill 
+    def attack(self, instance):
+        damage = 10
+        self.monster.hp -= damage
+        if self.monster.hp < 0:
+            self.monster.hp = 0
+        self.update_hp_labels()
+        self.message_label.text = f"You attacked {self.monster.name} for {damage} damage!"
+
+        if self.monster.hp <= 0:
+            self.message_label.text = f"{self.monster.name} has been defeated!"
+            self.attack_button.disabled = True
+            self.fireball_button.disabled = True
+            self.heal_button.disabled = True
+
+    def use_fireball(self, instance):
+        if self.player.mana >= self.player.skills["Fireball"]["mana_cost"]:
+            damage = self.player.skills["Fireball"]["damage"]
+            self.monster.hp -= damage
+            self.player.mana -= self.player.skills["Fireball"]["mana_cost"]
+            if self.monster.hp < 0:
+                self.monster.hp = 0
+            self.update_hp_labels()
+            self.update_mana_label()
+            self.message_label.text = f"You used Fireball and dealt {damage} damage!"
+        else:
+            self.message_label.text = "Not enough mana!"
+
+    def use_heal(self, instance):
+        if self.player.mana >= self.player.skills["Heal"]["mana_cost"]:
+            heal = self.player.skills["Heal"]["heal"]
+            self.player.hp += heal
+            if self.player.hp > self.player.max_hp:
+                self.player.hp = self.player.max_hp
+            self.player.mana -= self.player.skills["Heal"]["mana_cost"]
+            self.update_hp_labels()
+            self.update_mana_label()
+            self.message_label.text = f"You used Heal and recovered {heal} HP!"
+        else:
+            self.message_label.text = "Not enough mana!"
 
     def attack(self, instance):
         self.message_label.text = f"You attacked {self.monster.name}!"
