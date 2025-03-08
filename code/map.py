@@ -1,6 +1,7 @@
 from kivy.uix.image import Image
 from PIL import Image as PILImage
 
+
 class Map:
     def __init__(self, map_path):
         self.background = Image(source=map_path)

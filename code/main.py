@@ -3,6 +3,7 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from game_widget import GameWidget
 from battle_screen import BattleScreen
 
+
 class MyApp(App):
     def build(self):
         sm = ScreenManager()
