@@ -42,6 +42,11 @@ class BattleScreen(Screen):
         self.update_mana_label()
         self.message_label.text = f"Battle with {monster.name}!"
 
+    #HP 
+    def update_hp_labels(self):
+        self.player_hp_label.text = f"Player HP: {self.player.hp}/{self.player.max_hp}"
+        self.monster_hp_label.text = f"Monster HP: {self.monster.hp}/{self.monster.max_hp}"
+
     def attack(self, instance):
         self.message_label.text = f"You attacked {self.monster.name}!"
 
