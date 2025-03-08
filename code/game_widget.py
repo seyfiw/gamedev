@@ -4,7 +4,7 @@ from kivy.core.window import Window
 from kivy.graphics import Rectangle
 from kivy.uix.screenmanager import ScreenManager
 from kivy.graphics import Rectangle
-from player import Player,SwordAttack
+from player import Player
 from map import Map
 from camera import Camera
 from monster import Monster
@@ -15,8 +15,8 @@ class GameWidget(Widget):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.keyboard = KeyboardManager(self)
-        self.map = Map("../gamedev/image/map1-4.png")
-        self.player = Player("../image/Wr1.png", self.map)
+        self.map = Map("../gamedev/image/map/map1-4.png")
+        self.player = Player("../image/player/Wr1.png", self.map)
         self.camera = Camera(self.map, self.player)
         
         #print(f"Map size: {self.map.size}")
@@ -96,32 +96,3 @@ class GameWidget(Widget):
         
         
         self.check_collision()
-    
-       
-       
-    def update(self, dt):
-        # รับการกดปุ่ม
-        pressed_keys = set()
-        keyboard = self.keyboard
-        if keyboard.is_key_down(keyboard.keycodes['w']):
-            pressed_keys.add('w')
-        if keyboard.is_key_down(keyboard.keycodes['a']):
-            pressed_keys.add('a')
-        if keyboard.is_key_down(keyboard.keycodes['s']):
-            pressed_keys.add('s')
-        if keyboard.is_key_down(keyboard.keycodes['d']):
-            pressed_keys.add('d')
-        if keyboard.is_key_down(keyboard.keycodes['spacebar']):
-            pressed_keys.add('spacebar')  
-        
-        # อัพเดทการเคลื่อนที่ของผู้เล่น
-        self.player.update(dt, pressed_keys)
-        
-        # อัพเดทระบบการโจมตี
-        self.sword_attack.update(dt, pressed_keys)
-        
-        # ลบศัตรูที่ตายแล้วออกจากรายการเป้าหมาย
-        for enemy in self.enemies[:]:
-            if not enemy.is_alive:
-                self.sword_attack.remove_attack_target(enemy)
-                self.enemies.remove(enemy)
