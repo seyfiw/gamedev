@@ -22,7 +22,14 @@ class Monster(Image):
             self.world_position[0] + self.game_map.background.pos[0],
             self.world_position[1] + self.game_map.background.pos[1]
         )
+
+        self.animations = animations
+        self.current_animation = "idle"
+        self.current_frame = 0
+        self.animation_speed = 0.2  # เวลาเปลี่ยนเฟรม (วินาที)
         
+        # เริ่ม Animation
+        Clock.schedule_interval(self.update_animation, self.animation_speed)
         
 
         with self.canvas.after:
@@ -40,26 +47,13 @@ class Monster(Image):
         self.direction_change_time = 0
         self.direction_change_interval = 5  
         
-        self.animations = {
-            "walk_left": ["../image/Wl1.png"],
-            "walk_right": ["../image/Wl1.png"],
-            "idle": ["../image/Wl1.png"],
-        }
+        Clock.schedule_interval(self.move, 1 / 30)
         
-        for key in self.animations:
-            for i in range(len(self.animations[key])):
-                self.animations[key][i] = image_path
-        
-        self.current_animation = "idle"
-        self.current_frame = 0
-        self.animation_interval = 0.2
-        
-        Clock.schedule_interval(self.update_animation, self.animation_interval)
-        Clock.schedule_interval(self.move, 1/30)
         
     def update_animation(self, dt):
-        self.current_frame = (self.current_frame + 1) % len(self.animations[self.current_animation])
-        self.source = self.animations[self.current_animation][self.current_frame]
+        frames = self.animations[self.current_animation]
+        self.current_frame = (self.current_frame + 1) % len(frames)
+        self.source = frames[self.current_frame]
     
     def move(self, dt):
         self.direction_change_time += dt
