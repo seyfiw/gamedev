@@ -7,16 +7,22 @@ class BattleScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.monster = None
+        self.player = None
         self.layout = BoxLayout(orientation='vertical')
         self.add_widget(self.layout)
 
         self.message_label = Label(text="Turn-Based Battle", font_size=30)
         self.layout.add_widget(self.message_label)
 
-        self.attack_button = Button(text="Attack", size_hint=(1, 0.2))
-        self.attack_button.bind(on_press=self.attack)
-        self.layout.add_widget(self.attack_button)
+        self.player_hp_label = Label(text="Player HP: 100", font_size=20)
+        self.layout.add_widget(self.player_hp_label)
 
+        self.monster_hp_label = Label(text="Monster HP: 50", font_size=20)
+        self.layout.add_widget(self.monster_hp_label)
+
+        self.mana_label = Label(text="Mana: 50", font_size=20)
+        self.layout.add_widget(self.mana_label)
+         
         self.back_button = Button(text="Back to Game", size_hint=(1, 0.2))
         self.back_button.bind(on_press=self.back_to_game)
         self.layout.add_widget(self.back_button)

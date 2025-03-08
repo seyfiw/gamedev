@@ -72,7 +72,7 @@ class GameWidget(Widget):
         if self.screen_manager:
             self.screen_manager.current = 'battle'
             battle_screen = self.screen_manager.get_screen('battle')
-            battle_screen.start_battle(monster)
+            battle_screen.start_battle(monster,self.player)
 
     def update(self, dt):
         if "walk_left" in self.keyboard.pressed_keys:
