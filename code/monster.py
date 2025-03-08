@@ -23,7 +23,11 @@ class Monster(Image):
             self.world_position[1] + self.game_map.background.pos[1]
         )
 
-        self.animations = animations
+        if animations is not None:
+            self.animations = animations
+        else:
+            self.animations = self.load_default_animations()
+            
         self.current_animation = "idle"
         self.current_frame = 0
         self.animation_speed = 0.2  # เวลาเปลี่ยนเฟรม (วินาที)
@@ -57,11 +61,25 @@ class Monster(Image):
             "walk_right": ["../image/red/R/redR1.png", "../image/red/R/redR2.png","../image/red/R/redR3.png", "../image/red/R/redR4.png"],
             "idle": ["../image/red/R/redR1.png", "../image/red/R/redR2.png","../image/red/R/redR3.png", "../image/red/R/redR4.png"]
             }
-        elif self.name == "Blue":
+        elif self.name == "stone":
             return {
-                "walk_left": ["../image/stone/L/StoneL1.png", "../image/stone/L/StoneL1.png"],
-                "walk_right": ["../image/blue/R/blueR1.png", "../image/blue/R/blueR2.png"],
-                "idle": ["../image/blue/idle/blue_idle1.png", "../image/blue/idle/blue_idle2.png"]
+                "walk_left": ["../image/stone/L/StoneL1.png", "../image/stone/L/StoneL2.png", "../image/stone/L/StoneL3.png", "../image/stone/L/StoneL4.png", "../image/stone/L/StoneL5.png"],
+                "walk_right": ["../image/stone/R/StoneR1.png", "../image/stone/R/StoneR2.png", "../image/stone/R/StoneR3.png", "../image/stone/R/StoneR4.png", "../image/stone/R/StoneR5.png"],
+                "idle": ["../image/stone/R/StoneR1.png", "../image/stone/R/StoneR2.png", "../image/stone/R/StoneR3.png", "../image/stone/R/StoneR4.png", "../image/stone/R/StoneR5.png"],
+            }
+            
+        elif self.name == "Golem":
+            return {
+                "walk_left": ["../image/golem/Idle/Golem1.png", "../image/golem/Idle/Golem2.png", "../image/golem/Idle/Golem3.png", "../image/golem/Idle/Golem4.png", "../image/golem/Idle/Golem5.png"],
+                "walk_right": ["../image/golem/Idle/Golem1.png", "../image/golem/Idle/Golem2.png", "../image/golem/Idle/Golem3.png", "../image/golem/Idle/Golem4.png", "../image/golem/Idle/Golem5.png"],
+                "idle": ["../image/golem/Idle/Golem1.png", "../image/golem/Idle/Golem2.png", "../image/golem/Idle/Golem3.png", "../image/golem/Idle/Golem4.png", "../image/golem/Idle/Golem5.png"],
+            }
+            
+        elif self.name == "dragon":
+            return {
+                "walk_left": ["../image/stone/L/StoneL1.png", "../image/stone/L/StoneL2.png", "../image/stone/L/StoneL3.png", "../image/stone/L/StoneL4.png", "../image/stone/L/StoneL5.png"],
+                "walk_right": ["../image/stone/R/StoneR1.png", "../image/stone/R/StoneR2.png", "../image/stone/R/StoneR3.png", "../image/stone/R/StoneR4.png", "../image/stone/R/StoneR5.png"],
+                "idle": ["../image/stone/R/StoneR1.png", "../image/stone/R/StoneR2.png", "../image/stone/R/StoneR3.png", "../image/stone/R/StoneR4.png", "../image/stone/R/StoneR5.png"],
             }
         
     def update_animation(self, dt):
