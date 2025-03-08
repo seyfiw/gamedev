@@ -35,8 +35,11 @@ class BattleScreen(Screen):
         self.escape_button.bind(on_press=self.escape)
         self.layout.add_widget(self.escape_button)
 
-    def start_battle(self, monster):
+    def start_battle(self, monster, player):
         self.monster = monster
+        self.player = player
+        self.update_hp_labels()
+        self.update_mana_label()
         self.message_label.text = f"Battle with {monster.name}!"
 
     def attack(self, instance):
