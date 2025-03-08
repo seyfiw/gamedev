@@ -27,6 +27,14 @@ class BattleScreen(Screen):
         self.back_button.bind(on_press=self.back_to_game)
         self.layout.add_widget(self.back_button)
 
+        self.defend_button = Button(text="Defend", size_hint=(1, 0.2))
+        self.defend_button.bind(on_press=self.defend)
+        self.layout.add_widget(self.defend_button)
+
+        self.escape_button = Button(text="Escape", size_hint=(1, 0.2))
+        self.escape_button.bind(on_press=self.escape)
+        self.layout.add_widget(self.escape_button)
+
     def start_battle(self, monster):
         self.monster = monster
         self.message_label.text = f"Battle with {monster.name}!"
