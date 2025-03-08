@@ -31,20 +31,9 @@ class GameWidget(Widget):
         map_center_x = self.map.size[0] // 2
         map_center_y = self.map.size[1] // 2
         
-        Red_animations = {
-            "walk_left": ["../image/red/L/redL1.png", "../image/red/L/redL2.png","../image/red/L/redL3.png", "../image/red/L/redL4.png"],
-            "walk_right": ["../image/red/R/redR1.png", "../image/red/R/redR2.png","../image/red/R/redR3.png", "../image/red/R/redR4.png"],
-            "idle": ["../image/red/R/redR1.png", "../image/red/R/redR2.png","../image/red/R/redR3.png", "../image/red/R/redR4.png"]
-        }
-
-        orc_animations = {
-            "walk_left": ["../image/orc_walk_left_1.png", "../image/orc_walk_left_2.png"],
-            "walk_right": ["../image/orc_walk_right_1.png", "../image/orc_walk_right_2.png"],
-            "idle": ["../image/orc_idle_1.png", "../image/orc_idle_2.png"]
-        }
 
         self.monsters = [
-            Monster("Red", (map_center_x + 1600, map_center_y), "../image/red/R/redR1.png", self.map, animations=Red_animations),
+            Monster("Red", (map_center_x + 1600, map_center_y), "../image/red/R/redR1.png", self.map),
             Monster("Orc", (map_center_x, map_center_y + 1600), "monster.png", self.map),
             Monster("Troll", (map_center_x - 1600, map_center_y), "monster.png", self.map),
             Monster("Dragon", (map_center_x, map_center_y - 1600), "monster.png", self.map),
