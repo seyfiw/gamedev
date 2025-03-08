@@ -34,9 +34,9 @@ class GameWidget(Widget):
 
         self.monsters = [
             Monster("Red", (map_center_x + 1600, map_center_y), "../image/red/R/redR1.png", self.map),
-            Monster("Orc", (map_center_x, map_center_y + 1600), "monster.png", self.map),
-            Monster("Troll", (map_center_x - 1600, map_center_y), "monster.png", self.map),
-            Monster("Dragon", (map_center_x, map_center_y - 1600), "monster.png", self.map),
+            Monster("Stone", (map_center_x, map_center_y + 1600), "../image/stone/L/StoneL1.png", self.map),
+            Monster("Golem", (map_center_x - 1600, map_center_y), "../image/golem/Idle/Golem1.png", self.map),
+            Monster("Dragon", (map_center_x, map_center_y - 1600), "../image/dragon/L/dragonL1.png", self.map),
         ]
         
         
