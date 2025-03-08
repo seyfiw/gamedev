@@ -6,7 +6,7 @@ import random
 import math
 
 class Monster(Image):
-    def __init__(self, name, spawn_point, image_path, game_map, **kwargs):
+    def __init__(self, name, spawn_point, image_path, game_map, animations=None, **kwargs):
         super().__init__(**kwargs)
         self.name = name
         self.spawn_point = spawn_point 
@@ -49,6 +49,20 @@ class Monster(Image):
         
         Clock.schedule_interval(self.move, 1 / 30)
         
+        
+    def load_default_animations(self):
+        if self.name == "Red":
+            return {
+                "walk_left": ["../image/red/L/redL1.png", "../image/red/L/redL2.png","../image/red/L/redL3.png", "../image/red/L/redL4.png"],
+            "walk_right": ["../image/red/R/redR1.png", "../image/red/R/redR2.png","../image/red/R/redR3.png", "../image/red/R/redR4.png"],
+            "idle": ["../image/red/R/redR1.png", "../image/red/R/redR2.png","../image/red/R/redR3.png", "../image/red/R/redR4.png"]
+            }
+        elif self.name == "Blue":
+            return {
+                "walk_left": ["../image/stone/L/StoneL1.png", "../image/stone/L/StoneL1.png"],
+                "walk_right": ["../image/blue/R/blueR1.png", "../image/blue/R/blueR2.png"],
+                "idle": ["../image/blue/idle/blue_idle1.png", "../image/blue/idle/blue_idle2.png"]
+            }
         
     def update_animation(self, dt):
         frames = self.animations[self.current_animation]
