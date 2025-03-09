@@ -151,9 +151,15 @@ class BattleScreen(Screen):
         self.message_label.text = "You defended against the monster's attack!"
 
     def escape(self, instance):
+        damage = 5
+        self.player.hp -= damage
+        self.update_hp_labels()
+
         self.message_label.text = "You escaped from the battle!"
         self.parent.current = 'game'
+        self.check_battle_result()
 
+    
     def back_to_game(self, instance):
         self.parent.current = 'game'
         
