@@ -84,8 +84,17 @@ class BattleScreen(Screen):
         self.layout.add_widget(HP_layout)
 
         
-        # ปุ่ม Defend
-        self.defend_button = Button(text="Defend", size_hint=(1, 0.2))
+       # ปุ่ม Defend
+        self.defend_button = Button(
+            text="Defend", 
+            size_hint=(1, 0.2),
+            background_color=get_color_from_hex('#4C566A'),
+            color=get_color_from_hex('#ECEFF4'),
+            font_size=20,
+            background_normal='',
+            background_down='',
+            border=(10, 10, 10, 10)
+        )
         self.defend_button.bind(on_press=self.defend)
         self.layout.add_widget(self.defend_button)
 
