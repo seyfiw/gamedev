@@ -221,5 +221,8 @@ class GameApp(App):
         if self.background_music:
             self.background_music.stop()
 
+
+
+
 if __name__ == '__main__':
     GameApp().run()

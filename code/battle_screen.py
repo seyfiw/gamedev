@@ -4,6 +4,10 @@ from kivy.uix.button import Button
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.image import Image
 from kivy.uix.relativelayout import RelativeLayout
+from kivy.graphics import Color, Rectangle, RoundedRectangle
+from kivy.core.window import Window
+from kivy.utils import get_color_from_hex
+from kivy.clock import Clock
 
 class BattleScreen(Screen):
     def __init__(self, **kwargs):
@@ -28,28 +32,42 @@ class BattleScreen(Screen):
         self.mana_label = Label(text="Mana: 50", font_size=20)
         self.layout.add_widget(self.mana_label)
         
-        # Attack button
-        attack_layout = RelativeLayout(size_hint=(1, 0.2))
+       # ปุ่ม Attack
         self.attack_button = Button(
-            text="Attack",
-            size_hint=(1, 1.2),  # เต็มความกว้าง
-            pos_hint={"center_x": 0.5, "center_y": 0.5},
-            background_color=(0.9, 0, 0, 1)  # สีแดง
+            text="Attack", 
+            size_hint=(1, 0.2),
+            background_color=get_color_from_hex('#5E81AC'),
+            color=get_color_from_hex('#ECEFF4'),
+            font_size=20,
+            background_normal='',
+            background_down='',
+            border=(10, 10, 10, 10)
         )
         self.attack_button.bind(on_press=self.attack)
-        attack_layout.add_widget(self.attack_button)
-        self.layout.add_widget(attack_layout)
+        self.layout.add_widget(self.attack_button)
+
         
         # Fireball button
+         # ปุ่ม Fireball
         fireball_layout = RelativeLayout(size_hint=(1, 0.2))
-        fireball_button = Button(
-            text="Fireball 20 Damage, 10 Mana",
-            size_hint=(1, 1.2),  # เต็มความกว้างและสูงกว่าปกติ
-            pos_hint={"center_x": 0.5, "center_y": 0.5},
-            background_color=(1, 0.4, 0, 1)  # สีส้มแดง
+        fireball_image = Image(
+            source="image/skill/Fireball2.png", 
+            size_hint=(0.5, 1), 
+            pos_hint={"center_x": 0.5, "center_y": 0.5}
         )
-        fireball_button.bind(on_press=self.use_fireball)
-        fireball_layout.add_widget(fireball_button)
+        fireball_layout.add_widget(fireball_image)
+
+        self.fireball_button = Button(
+            text="Fireball 20 Damage, 10 Mana",
+            size_hint=(0.5, 1),
+            pos_hint={"center_x": 0.7, "center_y": 0.5},
+            background_color=(0, 0, 0, 0),  # ทำให้ปุ่มโปร่งใส
+            color=get_color_from_hex('#ECEFF4'),
+            font_size=16,
+            bold=True
+        )
+        self.fireball_button.bind(on_press=self.use_fireball)
+        fireball_layout.add_widget(self.fireball_button)
         self.layout.add_widget(fireball_layout)
                 
         
