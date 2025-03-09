@@ -16,17 +16,14 @@ class BattleScreen(Screen):
         self.monster = None
         self.player = None
 
-        # ตั้งค่าพื้นหลังของหน้าจอ
         with self.canvas.before:
-            Color(rgba=get_color_from_hex('#2E3440'))  # สีพื้นหลัง
+            Color(rgba=get_color_from_hex('#2E3440'))  
             self.rect = Rectangle(size=Window.size, pos=self.pos)
         self.bind(size=self._update_rect, pos=self._update_rect)
 
-        # Layout หลัก
         self.layout = BoxLayout(orientation='vertical', padding=20, spacing=10)
         self.add_widget(self.layout)
 
-        # ข้อความแสดงสถานะการต่อสู้
         self.message_label = Label(
             text="Turn-Based Battle", 
             font_size=30, 
@@ -35,7 +32,7 @@ class BattleScreen(Screen):
         )
         self.layout.add_widget(self.message_label)
 
-        # แสดง HP ของผู้เล่นและมอนสเตอร์
+        # HP 
         self.player_hp_label = Label(
             text="Player HP: 100", 
             font_size=20, 
@@ -50,7 +47,7 @@ class BattleScreen(Screen):
         )
         self.layout.add_widget(self.monster_hp_label)
 
-        # แสดง Mana ของผู้เล่น
+        # Mana
         self.mana_label = Label(
             text="Mana: 50", 
             font_size=20, 
@@ -163,10 +160,6 @@ class BattleScreen(Screen):
         self.rect.size = instance.size
 
         
-        
-
-        
-        
     def start_battle(self, monster, player):
         self.monster = monster
         self.player = player
@@ -197,10 +190,6 @@ class BattleScreen(Screen):
         self.check_battle_result()
 
     def use_fireball(self, instance):
-        damageMonster = 20
-        damagePlayer = 5
-        self.monster.hp -= damageMonster
-        self.player.hp -= damagePlayer
         if self.player.mana >= self.player.skills["Fireball"]["mana_cost"]:
             damage = self.player.skills["Fireball"]["damage"]
             self.monster.hp -= damage
@@ -244,6 +233,10 @@ class BattleScreen(Screen):
             self.message_label.text = "You won the battle!"
             self.give_rewards()
             self.monster.die()
+            
+            if self.on_monster_defeated:
+                self.on_monster_defeated()
+                
             Clock.schedule_once(self.back_to_game, 0.1)
             self.parent.current = 'game'
         elif self.player.hp <= 0:

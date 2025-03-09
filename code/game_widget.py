@@ -3,6 +3,9 @@ from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.graphics import Rectangle
 from kivy.uix.screenmanager import ScreenManager
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.label import Label
+from kivy.uix.button import Button
 from player import Player
 from map import Map
 from camera import Camera
@@ -22,6 +25,9 @@ class GameWidget(Widget):
         #print(f"Window size: {Window.width}, {Window.height}")
         #print(f"Initial map background pos: {self.map.background.pos}")
         #print(f"Initial player position: {self.player.position}")
+        
+        self.total_monsters = 4
+        self.defeated_monsters = 0  
 
         self.add_widget(self.map.background)
         self.add_widget(self.player.sprite)
@@ -70,6 +76,45 @@ class GameWidget(Widget):
             self.screen_manager.current = 'battle'
             battle_screen = self.screen_manager.get_screen('battle')
             battle_screen.start_battle(monster,self.player)
+            
+            battle_screen.on_monster_defeated = self.on_monster_defeated
+            
+    def on_monster_defeated(self):
+        if self.defeated_monsters < self.total_monsters:  # ตรวจสอบว่าไม่เกินจำนวนมอนสเตอร์ทั้งหมด
+            self.defeated_monsters += 1
+            if self.defeated_monsters >= self.total_monsters:
+                self.show_win_game()
+                        
+    def show_win_game(self):
+        if not hasattr(self, 'win_game_shown'):  # ตรวจสอบว่าแสดงหน้าจอชนะเกมแล้วหรือยัง
+            self.win_game_shown = True  # ตั้งค่าสถานะว่าแสดงแล้ว
+
+            win_layout = BoxLayout(orientation='vertical', padding=20, spacing=10)
+            
+            win_label = Label(
+                text="You Win the Game!", 
+                font_size=40, 
+                color=(1, 1, 1, 1),  # สีขาว
+                bold=True
+            )
+            win_layout.add_widget(win_label)
+
+            back_button = Button(
+                text="Back to Main Menu", 
+                size_hint=(1, 0.2),
+                background_color=(0, 1, 0, 1),  # สีเขียว
+                color=(1, 1, 1, 1),  # สีขาว
+                font_size=20
+            )
+            back_button.bind(on_press=self.back_to_main_menu)
+            win_layout.add_widget(back_button)
+
+            self.clear_widgets()  # ลบ Widgets เดิมทั้งหมดในหน้าจอ
+            self.add_widget(win_layout)  # เพิ่ม Layout ใหม่สำหรับหน้าจอชนะเกม
+        
+        
+    def back_to_main_menu(self, instance):
+        self.parent.current = 'main_menu'  # กลับไปที่หน้าจอเมนูหลัก
 
     def update(self, dt):
         if "walk_left" in self.keyboard.pressed_keys:
