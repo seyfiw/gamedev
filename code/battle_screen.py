@@ -9,30 +9,56 @@ from kivy.core.window import Window
 from kivy.utils import get_color_from_hex
 from kivy.clock import Clock
 
+
 class BattleScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.monster = None
         self.player = None
-        self.layout = BoxLayout(orientation='vertical')
+
+        # ตั้งค่าพื้นหลังของหน้าจอ
+        with self.canvas.before:
+            Color(rgba=get_color_from_hex('#2E3440'))  # สีพื้นหลัง
+            self.rect = Rectangle(size=Window.size, pos=self.pos)
+        self.bind(size=self._update_rect, pos=self._update_rect)
+
+        # Layout หลัก
+        self.layout = BoxLayout(orientation='vertical', padding=20, spacing=10)
         self.add_widget(self.layout)
 
         # ข้อความแสดงสถานะการต่อสู้
-        self.message_label = Label(text="Turn-Based Battle", font_size=30)
+        self.message_label = Label(
+            text="Turn-Based Battle", 
+            font_size=30, 
+            color=get_color_from_hex('#ECEFF4'), 
+            bold=True
+        )
         self.layout.add_widget(self.message_label)
 
         # แสดง HP ของผู้เล่นและมอนสเตอร์
-        self.player_hp_label = Label(text="Player HP: 100", font_size=20)
+        self.player_hp_label = Label(
+            text="Player HP: 100", 
+            font_size=20, 
+            color=get_color_from_hex('#88C0D0')
+        )
         self.layout.add_widget(self.player_hp_label)
 
-        self.monster_hp_label = Label(text="Monster HP: 50", font_size=20)
+        self.monster_hp_label = Label(
+            text="Monster HP: 50", 
+            font_size=20, 
+            color=get_color_from_hex('#BF616A')
+        )
         self.layout.add_widget(self.monster_hp_label)
 
         # แสดง Mana ของผู้เล่น
-        self.mana_label = Label(text="Mana: 50", font_size=20)
+        self.mana_label = Label(
+            text="Mana: 50", 
+            font_size=20, 
+            color=get_color_from_hex('#81A1C1')
+        )
         self.layout.add_widget(self.mana_label)
-        
-       # ปุ่ม Attack
+
+        # ปุ่ม Attack
         self.attack_button = Button(
             text="Attack", 
             size_hint=(1, 0.2),
@@ -46,9 +72,7 @@ class BattleScreen(Screen):
         self.attack_button.bind(on_press=self.attack)
         self.layout.add_widget(self.attack_button)
 
-        
-        # Fireball button
-         # ปุ่ม Fireball
+        # ปุ่ม Fireball
         fireball_layout = RelativeLayout(size_hint=(1, 0.2))
         fireball_image = Image(
             source="image/skill/Fireball2.png", 
@@ -69,22 +93,30 @@ class BattleScreen(Screen):
         self.fireball_button.bind(on_press=self.use_fireball)
         fireball_layout.add_widget(self.fireball_button)
         self.layout.add_widget(fireball_layout)
-                
-        
-        # Heal section
+
+        # ปุ่ม Heal
         HP_layout = RelativeLayout(size_hint=(1, 0.2))
+        HP_image = Image(
+            source="image/skill/heal.png", 
+            size_hint=(1, 1), 
+            pos_hint={"center_x": 0.5, "center_y": 0.5}
+        )
+        HP_layout.add_widget(HP_image)
+
         self.heal_button = Button(
             text="Heal (30 HP, 15 Mana)",
-            size_hint=(1, 1.2),  # เต็มความกว้างและสูงกว่าปกติ
-            pos_hint={"center_x": 0.5, "center_y": 0.5},
-            background_color=(0, 0.8, 0, 1)  # สีเขียว
+            size_hint=(0.5, 1),
+            pos_hint={"center_x": 0.7, "center_y": 0.5},
+            background_color=(0, 0, 0, 0),  # ทำให้ปุ่มโปร่งใส
+            color=get_color_from_hex('#ECEFF4'),
+            font_size=16,
+            bold=True
         )
         self.heal_button.bind(on_press=self.use_heal)
         HP_layout.add_widget(self.heal_button)
         self.layout.add_widget(HP_layout)
 
-        
-       # ปุ่ม Defend
+        # ปุ่ม Defend
         self.defend_button = Button(
             text="Defend", 
             size_hint=(1, 0.2),
@@ -130,6 +162,18 @@ class BattleScreen(Screen):
         self.rect.pos = instance.pos
         self.rect.size = instance.size
 
+        
+        
+
+        
+        
+    def start_battle(self, monster, player):
+        self.monster = monster
+        self.player = player
+        self.update_hp_labels()
+        self.update_mana_label()
+        self.message_label.text = f"Battle with {monster.name}!"
+
     #HP 
     def update_hp_labels(self):
         self.player_hp_label.text = f"Player HP: {self.player.hp}/{self.player.max_hp}"
@@ -153,12 +197,9 @@ class BattleScreen(Screen):
         self.check_battle_result()
 
     def use_fireball(self, instance):
-        damageMonster = 20
-        damagePlayer = 5
         if self.player.mana >= self.player.skills["Fireball"]["mana_cost"]:
             damage = self.player.skills["Fireball"]["damage"]
-            self.monster.hp -= damageMonster
-            self.player.hp -= damagePlayer
+            self.monster.hp -= damage
             self.player.mana -= self.player.skills["Fireball"]["mana_cost"]
             if self.monster.hp < 0:
                 self.monster.hp = 0
@@ -188,15 +229,9 @@ class BattleScreen(Screen):
         self.message_label.text = "You defended against the monster's attack!"
 
     def escape(self, instance):
-        damage = 5
-        self.player.hp -= damage
-        self.update_hp_labels()
-
         self.message_label.text = "You escaped from the battle!"
         self.parent.current = 'game'
-        self.check_battle_result()
 
-    
     def back_to_game(self, instance):
         self.parent.current = 'game'
         
@@ -205,9 +240,11 @@ class BattleScreen(Screen):
             self.message_label.text = "You won the battle!"
             self.give_rewards()
             self.monster.die()
+            Clock.schedule_once(self.back_to_game, 0.1)
             self.parent.current = 'game'
         elif self.player.hp <= 0:
             self.message_label.text = "You were defeated..."
+            Clock.schedule_once(self.back_to_game, 0.1)
             self.parent.current = 'game'
     
     # ให้รางวัลเมื่อชนะ        
