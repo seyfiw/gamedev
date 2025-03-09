@@ -28,41 +28,43 @@ class BattleScreen(Screen):
         self.mana_label = Label(text="Mana: 50", font_size=20)
         self.layout.add_widget(self.mana_label)
         
-         # ปุ่ม Attack
-        self.attack_button = Button(text="Attack", size_hint=(1, 0.2))
-        self.attack_button.bind(on_press=self.attack)
-        self.layout.add_widget(self.attack_button)
-        
-        # ปุ่ม Fireball
-        fireball_layout = RelativeLayout(size_hint=(1, 0.2))
-        fireball_image = Image(source="image/skill/Fireball2.png", size_hint=(0.5, 1), pos_hint={"center_x": 0.5, "center_y": 0.5})
-        fireball_layout.add_widget(fireball_image)
-        
-        self.fireball_button = Button(
-            text="Fireball 20 Damage, 10 Mana",
-            size_hint=(0.5, 1),
-            pos_hint={"center_x": 0.7, "center_y": 0.5},
-            background_color=(0, 1, 1, 0)  
+        # Attack button
+        attack_layout = RelativeLayout(size_hint=(1, 0.2))
+        self.attack_button = Button(
+            text="Attack",
+            size_hint=(1, 1.2),  # เต็มความกว้าง
+            pos_hint={"center_x": 0.5, "center_y": 0.5},
+            background_color=(0.9, 0, 0, 1)  # สีแดง
         )
+        self.attack_button.bind(on_press=self.attack)
+        attack_layout.add_widget(self.attack_button)
+        self.layout.add_widget(attack_layout)
         
-        self.fireball_button.bind(on_press=self.use_fireball)
-        fireball_layout.add_widget(self.fireball_button)
+        # Fireball button
+        fireball_layout = RelativeLayout(size_hint=(1, 0.2))
+        fireball_button = Button(
+            text="Fireball 20 Damage, 10 Mana",
+            size_hint=(1, 1.2),  # เต็มความกว้างและสูงกว่าปกติ
+            pos_hint={"center_x": 0.5, "center_y": 0.5},
+            background_color=(1, 0.4, 0, 1)  # สีส้มแดง
+        )
+        fireball_button.bind(on_press=self.use_fireball)
+        fireball_layout.add_widget(fireball_button)
         self.layout.add_widget(fireball_layout)
-
-        # ปุ่ม Heal
+                
+        
+        # Heal section
         HP_layout = RelativeLayout(size_hint=(1, 0.2))
-        HP_image = Image(source="image/skill/heal.png", size_hint=(1, 1), pos_hint={"center_x": 0.5, "center_y": 0.5})
-        HP_layout.add_widget(HP_image)
-
         self.heal_button = Button(
             text="Heal (30 HP, 15 Mana)",
-            size_hint=(0.5, 1),
-            pos_hint={"center_x": 0.7, "center_y": 0.5},
-            background_color=(0, 1, 1, 1)  # ค่า Alpha ต้องเป็น 1 (ไม่โปร่งใสทั้งหมด)
+            size_hint=(1, 1.2),  # เต็มความกว้างและสูงกว่าปกติ
+            pos_hint={"center_x": 0.5, "center_y": 0.5},
+            background_color=(0, 0.8, 0, 1)  # สีเขียว
         )
         self.heal_button.bind(on_press=self.use_heal)
         HP_layout.add_widget(self.heal_button)
         self.layout.add_widget(HP_layout)
+
         
         # ปุ่ม Defend
         self.defend_button = Button(text="Defend", size_hint=(1, 0.2))
@@ -114,9 +116,12 @@ class BattleScreen(Screen):
         self.check_battle_result()
 
     def use_fireball(self, instance):
+        damageMonster = 20
+        damagePlayer = 5
         if self.player.mana >= self.player.skills["Fireball"]["mana_cost"]:
             damage = self.player.skills["Fireball"]["damage"]
-            self.monster.hp -= damage
+            self.monster.hp -= damageMonster
+            self.player.hp -= damagePlayer
             self.player.mana -= self.player.skills["Fireball"]["mana_cost"]
             if self.monster.hp < 0:
                 self.monster.hp = 0
