@@ -144,14 +144,14 @@ class GameWidget(Widget):
                 monster.world_position[1] + self.map.background.pos[1]
             )
             if monster.parent is None:  # ตรวจสอบว่ามอนสเตอร์ไม่ได้อยู่ในหน้าจอแล้ว
-                self.add_widget(monster)
+                self.add_widget(monster)  # เพิ่มมอนสเตอร์กลับเข้าไปในหน้าจอ
 
         # ปิดหน้าจอชนะเกมและกลับไปที่หน้าจอเกมหลัก
         self.clear_widgets()  # ลบ Widgets ของหน้าจอชนะเกม
         self.add_widget(self.map.background)
         self.add_widget(self.player.sprite)
         for monster in self.monsters:
-            self.add_widget(monster)
+            self.add_widget(monster)  # เพิ่มมอนสเตอร์กลับเข้าไปในหน้าจอ
 
         # กลับไปที่หน้าจอเกมหลัก
         self.parent.current = 'game'

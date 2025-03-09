@@ -167,9 +167,7 @@ class Monster(Image):
         self.current_frame = 0
 
         def remove_monster(dt):
-            if self.parent and hasattr(self.parent, 'monsters'):  # ตรวจสอบว่า self.parent และ self.parent.monsters มีค่า
-                if self in self.parent.monsters:
-                    self.parent.monsters.remove(self)  # ลบ Monster ออกจากรายการ monsters
+            if self.parent:
                 self.parent.remove_widget(self)  # ลบ Monster ออกจากหน้าจอ
             
         Clock.schedule_once(remove_monster, len(self.animations["death"]) * self.animation_speed)
