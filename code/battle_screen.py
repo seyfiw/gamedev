@@ -99,7 +99,16 @@ class BattleScreen(Screen):
         self.layout.add_widget(self.defend_button)
 
         # ปุ่ม Escape
-        self.escape_button = Button(text="Escape", size_hint=(1, 0.2))
+        self.escape_button = Button(
+            text="Escape", 
+            size_hint=(1, 0.2),
+            background_color=get_color_from_hex('#BF616A'),
+            color=get_color_from_hex('#ECEFF4'),
+            font_size=20,
+            background_normal='',
+            background_down='',
+            border=(10, 10, 10, 10)
+        )
         self.escape_button.bind(on_press=self.escape)
         self.layout.add_widget(self.escape_button)
 
