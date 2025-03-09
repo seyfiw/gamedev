@@ -9,30 +9,43 @@ from kivy.uix.slider import Slider
 from kivy.core.audio import SoundLoader
 from kivy.properties import BooleanProperty, NumericProperty
 from kivy.clock import Clock
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.relativelayout import RelativeLayout
 
 class MainMenu(Screen):
     def __init__(self, **kwargs):
         super(MainMenu, self).__init__(**kwargs)
         layout = BoxLayout(orientation='vertical', spacing=10, padding=40)
         
-        title = Label(text='Menu', font_size=74)
-        layout.add_widget(title)
+        label = Label(text='Monster Gambit', font_size=74)
+        layout.add_widget(label)
         
         play_button = Button(text='Play', size_hint=(None, None), size=(200, 50))
         play_button.bind(on_release=self.play_game)
         layout.add_widget(play_button)
+        play_button.pos_hint = {'center_x': 0.5, 'center_y': 0.6}
+        
+        
+
         
         options_button = Button(text='Options', size_hint=(None, None), size=(200, 50))
         options_button.bind(on_release=self.options_menu)
         layout.add_widget(options_button)
+        options_button.pos_hint = {'center_x': 0.5, 'center_y': 0.4}
+
+        # Add a background image to the main menu
+       
         
         self.add_widget(layout)
     
     def play_game(self, instance):
         self.manager.current = 'play'
+
     
     def options_menu(self, instance):
         self.manager.current = 'options'
+    
+    
 
 class PlayGame(Screen):
     def __init__(self, **kwargs):
