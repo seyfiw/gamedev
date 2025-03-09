@@ -197,6 +197,10 @@ class BattleScreen(Screen):
         self.check_battle_result()
 
     def use_fireball(self, instance):
+        damageMonster = 20
+        damagePlayer = 5
+        self.monster.hp -= damageMonster
+        self.player.hp -= damagePlayer
         if self.player.mana >= self.player.skills["Fireball"]["mana_cost"]:
             damage = self.player.skills["Fireball"]["damage"]
             self.monster.hp -= damage
