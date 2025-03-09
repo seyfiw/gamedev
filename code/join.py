@@ -8,6 +8,7 @@ from kivy.uix.switch import Switch
 from kivy.uix.slider import Slider
 from kivy.core.audio import SoundLoader
 from kivy.properties import BooleanProperty, NumericProperty
+from kivy.clock import Clock
 
 class MainMenu(Screen):
     def __init__(self, **kwargs):
@@ -119,11 +120,13 @@ class OptionsMenu(Screen):
     def toggle_sound(self, instance, value):
         app = App.get_running_app()
         app.sound_enabled = value
+        app.update_background_music()
         print(f"Sound {'enabled' if value else 'disabled'}")
     
     def change_volume(self, instance, value):
         app = App.get_running_app()
         app.volume_level = value
+        app.update_background_music()
         print(f"Volume set to {value}")
     
     def toggle_sfx(self, instance, value):
@@ -140,9 +143,9 @@ class OptionsMenu(Screen):
     def test_sound(self, instance):
         app = App.get_running_app()
         if app.sound_enabled:
-            # ทดสอบเสียงตัวอย่าง (ต้องมีไฟล์ test_sound.wav ในโฟลเดอร์เดียวกับโปรแกรม)
+            # ทดสอบเสียงตัวอย่าง
             try:
-                sound = app.test_sound
+                sound = SoundLoader.load('cool-hip-hop-loop.mp3')
                 if sound:
                     sound.volume = app.volume_level
                     sound.play()
@@ -163,18 +166,47 @@ class GameApp(App):
     difficulty_level = NumericProperty(2)
     
     def build(self):
-        # โหลดไฟล์เสียงตัวอย่างสำหรับการทดสอบ
+        # โหลดเสียงพื้นหลัง
         try:
-            self.test_sound = SoundLoader.load('cool-hip-hop-loop.mp3')
-        except:
-            self.test_sound = None
-            print("Warning: Could not load test sound file")
+            self.background_music = SoundLoader.load('cool-hip-hop-loop.mp3')
+            if self.background_music:
+                self.background_music.volume = self.volume_level
+                self.background_music.loop = True  # เล่นเสียงซ้ำ
+            else:
+                print("Warning: Could not load background music file")
+        except Exception as e:
+            self.background_music = None
+            print(f"Warning: Could not load background music file. Error: {e}")
+        
+        # เริ่มเล่นเสียงพื้นหลังหลังจากโปรแกรมเริ่มทำงาน 1 วินาที
+        Clock.schedule_once(self.start_background_music, 1)
         
         sm = ScreenManager()
         sm.add_widget(MainMenu(name='menu'))
         sm.add_widget(PlayGame(name='play'))
         sm.add_widget(OptionsMenu(name='options'))
         return sm
+    
+    def start_background_music(self, dt):
+        # เริ่มเล่นเสียงพื้นหลังเมื่อแอพเริ่มต้น
+        if self.sound_enabled and self.background_music:
+            self.background_music.play()
+            print("Background music started")
+    
+    def update_background_music(self):
+        # อัพเดทสถานะของเสียงพื้นหลัง
+        if self.background_music:
+            if self.sound_enabled:
+                if not self.background_music.state == 'play':
+                    self.background_music.play()
+                self.background_music.volume = self.volume_level
+            else:
+                self.background_music.stop()
+    
+    def on_stop(self):
+        # หยุดเสียงเมื่อแอพถูกปิด
+        if self.background_music:
+            self.background_music.stop()
 
 if __name__ == '__main__':
     GameApp().run()
