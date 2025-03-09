@@ -44,48 +44,43 @@ class BattleScreen(Screen):
     # fireball
        
 
+     # Fireball section
         fireball_layout = RelativeLayout(size_hint=(1, 0.2))
-
-        fireball_image = Image(source="Fireball2.png", size_hint=(0.5, 1), pos_hint={"center_x": 0.5, "center_y": 0.5})
-        fireball_layout.add_widget(fireball_image)
-
         fireball_button = Button(
-        text="Fireball 20 Damage, 10 Mana",
-        size_hint=(20,20),
-        pos_hint={"center_x": 0.7, "center_y": 0.5},
-        background_color=(0, 1, 1, 0)  # ทำให้ปุ่มโปร่งใส
-)
+            text="Fireball 20 Damage, 10 Mana",
+            size_hint=(1, 1.2),  # เต็มความกว้างและสูงกว่าปกติ
+            pos_hint={"center_x": 0.5, "center_y": 0.25},
+            background_color=(1, 0.4, 0, 1)  # สีส้มแดง
+        )
         fireball_button.bind(on_press=self.use_fireball)
         fireball_layout.add_widget(fireball_button)
-
         self.layout.add_widget(fireball_layout)
 
-
-
-    #HP    
+        # Heal section
         HP_layout = RelativeLayout(size_hint=(1, 0.2))
-
-        HP_image = Image(source="HP.png", size_hint=(1, 1), pos_hint={"center_x": 0.5, "center_y": 0.5})
-        HP_layout.add_widget(HP_image)
-
         self.heal_button = Button(
-        text="Heal (30 HP, 15 Mana)", 
-          # ปรับขนาดให้เหมาะสม
-        pos_hint={"center_x": 0.7, "center_y": 0.5}, 
-        background_color=(0, 1, 1, 1)  # ค่า Alpha ต้องเป็น 1 (ไม่โปร่งใสทั้งหมด)
-)
-
+            text="Heal (30 HP, 15 Mana)",
+            size_hint=(1, 1.2),  # เต็มความกว้างและสูงกว่าปกติ
+            pos_hint={"center_x": 0.5, "center_y": 0.25},
+            background_color=(0, 0.8, 0, 1)  # สีเขียว
+        )
         self.heal_button.bind(on_press=self.use_heal)
-        HP_layout.add_widget(self.heal_button)  # เพิ่มปุ่มเข้าไปใน HP_layout
+        HP_layout.add_widget(self.heal_button)
+        self.layout.add_widget(HP_layout)
 
-        self.layout.add_widget(HP_layout)  # เพิ่ม HP_layout เข้าไปใน layout หลัก   
-
-        self.attack_button = Button(text="Attack", size_hint=(1, 0.2))
+        # Attack button
+        attack_layout = RelativeLayout(size_hint=(1, 0.2))
+        self.attack_button = Button(
+            text="Attack",
+            size_hint=(1, 1.2),  # เต็มความกว้าง
+            pos_hint={"center_x": 0.5, "center_y": 0.25},
+            background_color=(0.9, 0, 0, 1)  # สีแดง
+        )
         self.attack_button.bind(on_press=self.attack)
-        self.layout.add_widget(self.attack_button)
-
-        
-    
+        attack_layout.add_widget(self.attack_button)
+        self.layout.add_widget(attack_layout)
+                
+            
 
 
     def start_battle(self, monster, player):

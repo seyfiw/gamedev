@@ -165,7 +165,7 @@ class GameApp(App):
     def build(self):
         # โหลดไฟล์เสียงตัวอย่างสำหรับการทดสอบ
         try:
-            self.test_sound = SoundLoader.load('test_sound.wav')
+            self.test_sound = SoundLoader.load('cool-hip-hop-loop.mp3')
         except:
             self.test_sound = None
             print("Warning: Could not load test sound file")
