@@ -17,6 +17,8 @@ class Monster(Image):
         self.allow_stretch = True  # อนุญาตให้ขยายภาพ
         self.keep_ratio = False  # ไม่ต้องรักษาอัตราส่วน
         self.game_map = game_map
+        self.max_hp = 50  # เลือดสูงสุด
+        self.hp = self.max_hp  # เลือดปัจจุบัน
         
         self.world_position = list(spawn_point)
         self.original_position = list(spawn_point)

@@ -2,6 +2,12 @@ from kivy.uix.screenmanager import Screen
 from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.gridlayout import GridLayout
+from kivy.uix.image import Image
+from kivy.uix.relativelayout import RelativeLayout
+
+
+
 
 class BattleScreen(Screen):
     def __init__(self, **kwargs):
@@ -35,6 +41,53 @@ class BattleScreen(Screen):
         self.escape_button.bind(on_press=self.escape)
         self.layout.add_widget(self.escape_button)
 
+    # fireball
+       
+
+        fireball_layout = RelativeLayout(size_hint=(1, 0.2))
+
+        fireball_image = Image(source="Fireball2.png", size_hint=(0.5, 1), pos_hint={"center_x": 0.5, "center_y": 0.5})
+        fireball_layout.add_widget(fireball_image)
+
+        fireball_button = Button(
+        text="Fireball 20 Damage, 10 Mana",
+        size_hint=(20,20),
+        pos_hint={"center_x": 0.7, "center_y": 0.5},
+        background_color=(0, 1, 1, 0)  # ทำให้ปุ่มโปร่งใส
+)
+        fireball_button.bind(on_press=self.use_fireball)
+        fireball_layout.add_widget(fireball_button)
+
+        self.layout.add_widget(fireball_layout)
+
+
+
+    #HP    
+        HP_layout = RelativeLayout(size_hint=(1, 0.2))
+
+        HP_image = Image(source="HP.png", size_hint=(1, 1), pos_hint={"center_x": 0.5, "center_y": 0.5})
+        HP_layout.add_widget(HP_image)
+
+        self.heal_button = Button(
+        text="Heal (30 HP, 15 Mana)", 
+          # ปรับขนาดให้เหมาะสม
+        pos_hint={"center_x": 0.7, "center_y": 0.5}, 
+        background_color=(0, 1, 1, 1)  # ค่า Alpha ต้องเป็น 1 (ไม่โปร่งใสทั้งหมด)
+)
+
+        self.heal_button.bind(on_press=self.use_heal)
+        HP_layout.add_widget(self.heal_button)  # เพิ่มปุ่มเข้าไปใน HP_layout
+
+        self.layout.add_widget(HP_layout)  # เพิ่ม HP_layout เข้าไปใน layout หลัก   
+
+        self.attack_button = Button(text="Attack", size_hint=(1, 0.2))
+        self.attack_button.bind(on_press=self.attack)
+        self.layout.add_widget(self.attack_button)
+
+        
+    
+
+
     def start_battle(self, monster, player):
         self.monster = monster
         self.player = player
@@ -52,12 +105,14 @@ class BattleScreen(Screen):
     
     #skill 
     def attack(self, instance):
-        damage = 10
-        self.monster.hp -= damage
+        damageMonster = 10
+        damagePlayer = 5
+        self.monster.hp -= damageMonster
+        self.player.hp -= damagePlayer
         if self.monster.hp < 0:
             self.monster.hp = 0
         self.update_hp_labels()
-        self.message_label.text = f"You attacked {self.monster.name} for {damage} damage!"
+        self.message_label.text = f"You attacked {self.monster.name} for {damageMonster} damage!"
 
         if self.monster.hp <= 0:
             self.message_label.text = f"{self.monster.name} has been defeated!"
@@ -91,8 +146,7 @@ class BattleScreen(Screen):
         else:
             self.message_label.text = "Not enough mana!"
 
-    def attack(self, instance):
-        self.message_label.text = f"You attacked {self.monster.name}!"
+    
 
     def back_to_game(self, instance):
         self.parent.current = 'game'
@@ -114,3 +168,10 @@ class BattleScreen(Screen):
         elif self.player.hp <= 0:
             self.message_label.text = "You were defeated..."
             self.parent.current = 'game'
+    def give_rewards(self):
+        # ให้รางวัลเมื่อชนะ
+        self.player.hp = self.player.max_hp  # เติมเลือดให้เต็ม
+        self.player.mana = 50  # เติม mana ให้เต็ม
+        self.message_label.text = "Now restored your HP and Mana!"
+    
+    
