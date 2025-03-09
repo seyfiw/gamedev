@@ -3,7 +3,6 @@ from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.graphics import Rectangle
 from kivy.uix.screenmanager import ScreenManager
-from kivy.graphics import Rectangle
 from player import Player
 from map import Map
 from camera import Camera
@@ -38,8 +37,6 @@ class GameWidget(Widget):
             Monster("Golem", (map_center_x - 1600, map_center_y), "../image/golem/Idle/Golem1.png", self.map),
             Monster("Dragon", (map_center_x, map_center_y - 1600), "../image/dragon/L/dragonL1.png", self.map),
         ]
-        
-        
 
         for monster in self.monsters:
             self.add_widget(monster)
@@ -85,11 +82,10 @@ class GameWidget(Widget):
         self.player.update(dt, self.keyboard.pressed_keys)
         self.camera.update()
 
-      
-
-        for monster in self.monsters:
-            monster.update_position()
-
+        for monster in self.monsters[:]: 
+            if monster.hp > 0: 
+                monster.update_position()
+                
         self.player.sprite.pos = (
             self.player.position[0] + self.map.background.pos[0],
             self.player.position[1] + self.map.background.pos[1]

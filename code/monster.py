@@ -64,13 +64,15 @@ class Monster(Image):
             return {
                 "walk_left": ["../image/red/L/redL1.png", "../image/red/L/redL2.png","../image/red/L/redL3.png", "../image/red/L/redL4.png"],
             "walk_right": ["../image/red/R/redR1.png", "../image/red/R/redR2.png","../image/red/R/redR3.png", "../image/red/R/redR4.png"],
-            "idle": ["../image/red/R/redR1.png", "../image/red/R/redR2.png","../image/red/R/redR3.png", "../image/red/R/redR4.png"]
+            "idle": ["../image/red/R/redR1.png", "../image/red/R/redR2.png","../image/red/R/redR3.png", "../image/red/R/redR4.png"],
+            "death": ["../image/red/R/redR1.png", "../image/red/R/redR2.png","../image/red/R/redR3.png", "../image/red/R/redR4.png"],
             }
         elif self.name == "Stone":
             return {
                 "walk_left": ["../image/stone/L/StoneL1.png", "../image/stone/L/StoneL2.png", "../image/stone/L/StoneL3.png", "../image/stone/L/StoneL4.png", "../image/stone/L/StoneL5.png"],
                 "walk_right": ["../image/stone/R/StoneR1.png", "../image/stone/R/StoneR2.png", "../image/stone/R/StoneR3.png", "../image/stone/R/StoneR4.png", "../image/stone/R/StoneR5.png"],
                 "idle": ["../image/stone/R/StoneR1.png", "../image/stone/R/StoneR2.png", "../image/stone/R/StoneR3.png", "../image/stone/R/StoneR4.png", "../image/stone/R/StoneR5.png"],
+                "death": ["../image/stone/R/StoneR1.png", "../image/stone/R/StoneR2.png", "../image/stone/R/StoneR3.png", "../image/stone/R/StoneR4.png", "../image/stone/R/StoneR5.png"],
             }
             
         elif self.name == "Golem":
@@ -78,6 +80,7 @@ class Monster(Image):
                 "walk_left": ["../image/golem/Idle/Golem1.png", "../image/golem/Idle/Golem2.png", "../image/golem/Idle/Golem3.png", "../image/golem/Idle/Golem4.png", "../image/golem/Idle/Golem5.png"],
                 "walk_right": ["../image/golem/Idle/Golem1.png", "../image/golem/Idle/Golem2.png", "../image/golem/Idle/Golem3.png", "../image/golem/Idle/Golem4.png", "../image/golem/Idle/Golem5.png"],
                 "idle": ["../image/golem/Idle/Golem1.png", "../image/golem/Idle/Golem2.png", "../image/golem/Idle/Golem3.png", "../image/golem/Idle/Golem4.png", "../image/golem/Idle/Golem5.png"],
+                "death": ["../image/golem/Idle/Golem1.png", "../image/golem/Idle/Golem2.png", "../image/golem/Idle/Golem3.png", "../image/golem/Idle/Golem4.png", "../image/golem/Idle/Golem5.png"],
             }
             
         elif self.name == "Dragon":
@@ -85,6 +88,7 @@ class Monster(Image):
                 "walk_left": ["../image/dragon/L/dragonL1.png", "../image/dragon/L/dragonL2.png", "../image/dragon/L/dragonL3.png", "../image/dragon/L/dragonL4.png", "../image/dragon/L/dragonL5.png"],
                 "walk_right": ["../image/dragon/R/dragonR1.png", "../image/dragon/R/dragonR2.png", "../image/dragon/R/dragonR3.png", "../image/dragon/R/dragonR4.png", "../image/dragon/R/dragonR5.png"],
                 "idle": ["../image/dragon/R/dragonR1.png", "../image/dragon/R/dragonR2.png", "../image/dragon/R/dragonR3.png", "../image/dragon/R/dragonR4.png", "../image/dragon/R/dragonR5.png"],
+                "death": ["../image/dragon/R/dragonR1.png", "../image/dragon/R/dragonR2.png", "../image/dragon/R/dragonR3.png", "../image/dragon/R/dragonR4.png", "../image/dragon/R/dragonR5.png"],
             }
         
     def update_animation(self, dt):
@@ -156,3 +160,16 @@ class Monster(Image):
             self.pos = new_pos
             #self.rect.pos = self.pos  
             #self.label.pos = new_pos  
+           
+    #monster die        
+    def die(self):
+        self.current_animation = "death"
+        self.current_frame = 0
+
+        def remove_monster(dt):
+            if self.parent and hasattr(self.parent, 'monsters'):  # ตรวจสอบว่า self.parent และ self.parent.monsters มีค่า
+                if self in self.parent.monsters:
+                    self.parent.monsters.remove(self)  # ลบ Monster ออกจากรายการ monsters
+                self.parent.remove_widget(self)  # ลบ Monster ออกจากหน้าจอ
+            
+        Clock.schedule_once(remove_monster, len(self.animations["death"]) * self.animation_speed)

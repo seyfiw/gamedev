@@ -156,6 +156,7 @@ class BattleScreen(Screen):
         if  self.monster.hp <= 0:
             self.message_label.text = "You won the battle!"
             self.give_rewards()
+            self.monster.die()
             self.parent.current = 'game'
         elif self.player.hp <= 0:
             self.message_label.text = "You were defeated..."
