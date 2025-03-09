@@ -113,21 +113,22 @@ class BattleScreen(Screen):
         self.layout.add_widget(self.escape_button)
 
         # ปุ่ม Back to Game
-        self.back_button = Button(text="Back to Game", size_hint=(1, 0.2))
+        self.back_button = Button(
+            text="Back to Game", 
+            size_hint=(1, 0.2),
+            background_color=get_color_from_hex('#A3BE8C'),
+            color=get_color_from_hex('#ECEFF4'),
+            font_size=20,
+            background_normal='',
+            background_down='',
+            border=(10, 10, 10, 10)
+        )
         self.back_button.bind(on_press=self.back_to_game)
         self.layout.add_widget(self.back_button)
 
-        
-        
-
-        
-        
-    def start_battle(self, monster, player):
-        self.monster = monster
-        self.player = player
-        self.update_hp_labels()
-        self.update_mana_label()
-        self.message_label.text = f"Battle with {monster.name}!"
+    def _update_rect(self, instance, value):
+        self.rect.pos = instance.pos
+        self.rect.size = instance.size
 
     #HP 
     def update_hp_labels(self):
