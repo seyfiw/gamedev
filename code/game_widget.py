@@ -99,19 +99,62 @@ class GameWidget(Widget):
             )
             win_layout.add_widget(win_label)
 
-            back_button = Button(
-                text="Back to Main Menu", 
+            restart_button = Button(
+                text="Restart Game", 
                 size_hint=(1, 0.2),
-                background_color=(0, 1, 0, 1),  # สีเขียว
+                background_color=(0, 0.7, 1, 1),  # สีฟ้า
                 color=(1, 1, 1, 1),  # สีขาว
                 font_size=20
             )
-            back_button.bind(on_press=self.back_to_main_menu)
-            win_layout.add_widget(back_button)
+            restart_button.bind(on_press=self.restart_game)  # เชื่อมโยงฟังก์ชัน restart_game
+            win_layout.add_widget(restart_button)
 
             self.clear_widgets()  # ลบ Widgets เดิมทั้งหมดในหน้าจอ
             self.add_widget(win_layout)  # เพิ่ม Layout ใหม่สำหรับหน้าจอชนะเกม
-        
+            
+            
+    def restart_game(self, instance):
+        # รีเซ็ตสถานะของเกม
+        self.defeated_monsters = 0
+        self.player.hp = self.player.max_hp
+        self.player.mana = 50
+
+        # รีเซ็ตตำแหน่งผู้เล่น
+        self.player.position = [self.map.size[0] // 2, self.map.size[1] // 2]  
+        self.player.sprite.pos = (
+            self.player.position[0] + self.map.background.pos[0],
+            self.player.position[1] + self.map.background.pos[1]
+        )
+
+        # รีเซ็ตมอนสเตอร์ทั้งหมด
+        map_center_x = self.map.size[0] // 2
+        map_center_y = self.map.size[1] // 2
+        monster_positions = [
+            (map_center_x + 1600, map_center_y),
+            (map_center_x, map_center_y + 1600),
+            (map_center_x - 1600, map_center_y),
+            (map_center_x, map_center_y - 1600)
+        ]
+
+        for i, monster in enumerate(self.monsters):
+            monster.hp = monster.max_hp
+            monster.world_position = list(monster_positions[i])  # รีเซ็ตตำแหน่งมอนสเตอร์
+            monster.pos = (
+                monster.world_position[0] + self.map.background.pos[0],
+                monster.world_position[1] + self.map.background.pos[1]
+            )
+            if monster.parent is None:  # ตรวจสอบว่ามอนสเตอร์ไม่ได้อยู่ในหน้าจอแล้ว
+                self.add_widget(monster)
+
+        # ปิดหน้าจอชนะเกมและกลับไปที่หน้าจอเกมหลัก
+        self.clear_widgets()  # ลบ Widgets ของหน้าจอชนะเกม
+        self.add_widget(self.map.background)
+        self.add_widget(self.player.sprite)
+        for monster in self.monsters:
+            self.add_widget(monster)
+
+        # กลับไปที่หน้าจอเกมหลัก
+        self.parent.current = 'game'
         
     def back_to_main_menu(self, instance):
         self.parent.current = 'main_menu'  # กลับไปที่หน้าจอเมนูหลัก
@@ -135,6 +178,5 @@ class GameWidget(Widget):
             self.player.position[0] + self.map.background.pos[0],
             self.player.position[1] + self.map.background.pos[1]
         )
-        
         
         self.check_collision()
