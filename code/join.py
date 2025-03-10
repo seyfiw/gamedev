@@ -171,6 +171,23 @@ class OptionsMenu(Screen):
     def back_to_menu(self, instance):
         self.manager.current = 'menu'
 
+class StartScreen(Screen):
+    def __init__(self, **kwargs):
+        super(StartScreen, self).__init__(**kwargs)
+        layout = BoxLayout(orientation='vertical', spacing=10, padding=40)
+        
+        label = Label(text='Welcome to Monster Gambit', font_size=74)
+        layout.add_widget(label)
+        
+        start_button = Button(text='Start Game', size_hint=(None, None), size=(200, 50))
+        start_button.bind(on_release=self.start_game)
+        layout.add_widget(start_button)
+        
+        self.add_widget(layout)
+    
+    def start_game(self, instance):
+        self.manager.current = 'menu'
+
 class GameApp(App):
     # เพิ่ม Properties สำหรับเก็บค่าต่างๆ
     sound_enabled = BooleanProperty(True)
@@ -195,6 +212,7 @@ class GameApp(App):
         Clock.schedule_once(self.start_background_music, 1)
         
         sm = ScreenManager()
+        sm.add_widget(StartScreen(name='start'))
         sm.add_widget(MainMenu(name='menu'))
         sm.add_widget(PlayGame(name='play'))
         sm.add_widget(OptionsMenu(name='options'))

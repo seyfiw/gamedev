@@ -89,28 +89,42 @@ class GameWidget(Widget):
         if not hasattr(self, 'win_game_shown'):  # ตรวจสอบว่าแสดงหน้าจอชนะเกมแล้วหรือยัง
             self.win_game_shown = True  # ตั้งค่าสถานะว่าแสดงแล้ว
 
-            win_layout = BoxLayout(orientation='vertical', padding=20, spacing=10)
+            # สร้าง Layout หลัก
+            main_layout = BoxLayout(orientation='vertical', padding=20, spacing=10)
             
+            # เพิ่มช่องว่างด้านบนเพื่อดันปุ่มลงมาอยู่ตรงกลาง
+            main_layout.add_widget(Widget(size_hint=(1, 0.4)))  # ช่องว่างด้านบน
+
+            # สร้าง Layout สำหรับข้อความและปุ่ม
+            center_layout = BoxLayout(orientation='vertical', size_hint=(1, 0.2))
+            
+            # ข้อความ "You Win the Game!"
             win_label = Label(
                 text="You Win the Game!", 
                 font_size=40, 
                 color=(1, 1, 1, 1),  # สีขาว
-                bold=True
-            )
-            win_layout.add_widget(win_label)
+                bold=True,
+                size_hint=(1, 0.5))
+            
+            center_layout.add_widget(win_label)
 
+            # ปุ่ม Restart
             restart_button = Button(
                 text="Restart Game", 
-                size_hint=(1, 0.2),
+                size_hint=(1, 0.5),
                 background_color=(0, 0.7, 1, 1),  # สีฟ้า
                 color=(1, 1, 1, 1),  # สีขาว
-                font_size=20
+                font_size=20,
+                background_normal='',
+                background_down='',
+                border=(10, 10, 10, 10)
             )
+            
             restart_button.bind(on_press=self.restart_game)  # เชื่อมโยงฟังก์ชัน restart_game
-            win_layout.add_widget(restart_button)
+            main_layout.add_widget(restart_button)
 
             self.clear_widgets()  # ลบ Widgets เดิมทั้งหมดในหน้าจอ
-            self.add_widget(win_layout)  # เพิ่ม Layout ใหม่สำหรับหน้าจอชนะเกม
+            self.add_widget(main_layout)  # เพิ่ม Layout ใหม่สำหรับหน้าจอชนะเกม
             
             
     def restart_game(self, instance):
