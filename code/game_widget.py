@@ -17,7 +17,7 @@ class GameWidget(Widget):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.keyboard = KeyboardManager(self)
-        self.map = Map("../gamedev/image/map/map1-4.png")
+        self.map = Map("../gamedev/image/map/map1-3.png")
         self.player = Player("../image/player/Wr1.png", self.map)
         self.camera = Camera(self.map, self.player)
         
