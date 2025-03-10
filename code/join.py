@@ -33,13 +33,12 @@ class MainMenu(Screen):
         layout.add_widget(options_button)
         options_button.pos_hint = {'center_x': 0.5, 'center_y': 0.4}
 
-        # Add a background image to the main menu
        
         
         self.add_widget(layout)
     
     def play_game(self, instance):
-        self.manager.current = 'play'
+        self.manager.current = 'game' 
 
     
     def options_menu(self, instance):
