@@ -17,17 +17,15 @@ from kivy.uix.gridlayout import GridLayout
 class ImageButtonWithText(ButtonBehavior, RelativeLayout):
     def __init__(self, image_source, button_text, **kwargs):
         super().__init__(**kwargs)
-        self.size_hint = (3, 5)
-        
+        self.size_hint = (1, 1)
 
         self.image = Image(
             source=image_source, 
-            size_hint=(2.0, 4.5),  
+            size_hint=(1, 1),  
             pos_hint={"center_x": 0.5, "center_y": 0.5}  
         )
         self.add_widget(self.image)
 
-        # 
         self.label = Label(
             text=button_text, 
             size_hint=(0.8, 0.2), 
@@ -68,14 +66,17 @@ class BattleScreen(Screen):
         self.background.pos = self.pos
         self.bind(size=self._update_background, pos=self._update_background)
 
-        self.layout = BoxLayout(orientation='vertical', padding=20, spacing=10)
+        # ใช้ BoxLayout เป็นหลัก
+        self.layout = BoxLayout(orientation='vertical', padding=10, spacing=10)
         self.add_widget(self.layout)
 
+        # ข้อความสถานะการต่อสู้
         self.message_label = Label(
             text="Turn-Based Battle", 
             font_size=30, 
             color=get_color_from_hex('#ECEFF4'), 
-            bold=True
+            bold=True,
+            size_hint=(1, 0.1)
         )
         self.layout.add_widget(self.message_label)
 
@@ -83,38 +84,42 @@ class BattleScreen(Screen):
         self.player_hp_label = Label(
             text="Player HP: 100", 
             font_size=20, 
-            color=get_color_from_hex('#88C0D0')
+            color=get_color_from_hex('#88C0D0'),
+            size_hint=(1, 0.1)
         )
         self.layout.add_widget(self.player_hp_label)
 
         self.monster_hp_label = Label(
             text="Monster HP: 50", 
             font_size=20, 
-            color=get_color_from_hex('#BF616A')
+            color=get_color_from_hex('#BF616A'),
+            size_hint=(1, 0.1)
         )
         self.layout.add_widget(self.monster_hp_label)
 
         self.mana_label = Label(
             text="Mana: 50", 
             font_size=20, 
-            color=get_color_from_hex('#81A1C1')
+            color=get_color_from_hex('#81A1C1'),
+            size_hint=(1, 0.1)
         )
         self.layout.add_widget(self.mana_label)
 
-        self.button_layout = GridLayout(cols=2, rows=2, spacing=50, size_hint=(1.0, 1.3))
+
+        self.button_layout = GridLayout(cols=3, rows=2, spacing=10, size_hint=(0.8, 0.2), pos_hint={"center_x": 0.5, "center_y": 0.1})
         self.layout.add_widget(self.button_layout)
 
         # ปุ่ม Attack (ซ้ายบน)
         self.attack_button = ImageButtonWithText(
-            image_source="image/button/test_Button.png",  
-            button_text="Attack"  #
+            image_source="image/button/test.png",  
+            button_text="Attack"  
         )
         self.attack_button.bind(on_press=self.attack)
         self.button_layout.add_widget(self.attack_button)
 
         # ปุ่ม Fireball (ขวาบน)
         self.fireball_button = ImageButtonWithText(
-            image_source="image/button/test_Button.png", 
+            image_source="image/button/test.png", 
             button_text="Fireball (20 Damage, 10 Mana)" 
         )
         self.fireball_button.bind(on_press=self.use_fireball)
@@ -122,7 +127,7 @@ class BattleScreen(Screen):
 
         # ปุ่ม Heal (ซ้ายล่าง)
         self.heal_button = ImageButtonWithText(
-            image_source="image/button/test_Button.png",  
+            image_source="image/button/test.png",  
             button_text="Heal (30 HP, 15 Mana)"  
         )
         self.heal_button.bind(on_press=self.use_heal)
@@ -130,25 +135,20 @@ class BattleScreen(Screen):
 
         # ปุ่ม Defend (ขวาล่าง)
         self.defend_button = ImageButtonWithText(
-            image_source="image/button/test_Button.png", 
+            image_source="image/button/test.png", 
             button_text="Defend"  
         )
         self.defend_button.bind(on_press=self.defend)
         self.button_layout.add_widget(self.defend_button)
 
         # ปุ่ม Escape 
-        self.escape_button = AnimatedButton(
-            text="Escape", 
-            size_hint=(0.1, 0.1),
-            background_color=get_color_from_hex('#BF616A'),
-            color=get_color_from_hex('#ECEFF4'),
-            font_size=16,
-            background_normal='',
-            background_down='',
-            border=(10, 10, 10, 10)
+        self.escape_button = ImageButtonWithText(
+            image_source="image/button/test.png", 
+            button_text="Escape"  
+            
         )
         self.escape_button.bind(on_press=self.escape)
-        self.layout.add_widget(self.escape_button)
+        self.button_layout.add_widget(self.escape_button)
 
     def _update_background(self, instance, value):
         self.background.size = instance.size
@@ -218,10 +218,10 @@ class BattleScreen(Screen):
             self.message_label.text = "You won the battle!"
             self.give_rewards()
             self.monster.die()
-            Clock.schedule_once(self.back_to_game, 2)  # หน่วงเวลา 2 วินาทีก่อนกลับ
+            Clock.schedule_once(self.back_to_game, 2)  
         elif self.player.hp <= 0:
             self.message_label.text = "You were defeated..."
-            Clock.schedule_once(self.back_to_game, 2)  # หน่วงเวลา 2 วินาทีก่อนกลับ
+            Clock.schedule_once(self.back_to_game, 2) 
 
     def give_rewards(self):
         self.player.hp = self.player.max_hp
