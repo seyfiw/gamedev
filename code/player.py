@@ -21,6 +21,12 @@ class Player:
                           "../image/player/Wl1.png","../image/player/Wl1.png","../image/player/Wl1.png","../image/player/Wl1.png","../image/player/Wl1.png"],
             "walk_right": ["../image/player/Wr1.png","../image/player/Wr1.png","../image/player/Wr1.png", "../image/player/Wr2.png", "../image/player/Wr3.png", "../image/player/Wr4.png", "../image/player/Wr4.png"
                            , "../image/player/Wr4.png", "../image/player/Wr3.png","../image/player/Wr2.png","../image/player/Wr1.png","../image/player/Wr1.png","../image/player/Wr1.png","../image/player/Wr1.png"],
+            "attack": ["../image/player/attack1.png", "../image/player/attack2.png", "../image/player/attack3.png"],
+            "cast_fireball": ["../image/player/fireball1.png", "../image/player/fireball2.png", "../image/player/fireball3.png"],
+            "heal": ["../image/player/heal1.png", "../image/player/heal2.png", "../image/player/heal3.png"],
+            "defend": ["../image/player/defend1.png", "../image/player/defend2.png", "../image/player/defend3.png"],
+        
+        
         }
         self.current_animation = "walk_left"
         self.current_frame = 0

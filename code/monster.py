@@ -63,9 +63,11 @@ class Monster(Image):
         if self.name == "Red":
             return {
                 "walk_left": ["../image/red/L/redL1.png", "../image/red/L/redL2.png","../image/red/L/redL3.png", "../image/red/L/redL4.png"],
-            "walk_right": ["../image/red/R/redR1.png", "../image/red/R/redR2.png","../image/red/R/redR3.png", "../image/red/R/redR4.png"],
-            "idle": ["../image/red/R/redR1.png", "../image/red/R/redR2.png","../image/red/R/redR3.png", "../image/red/R/redR4.png"],
-            "death": ["../image/red/R/redR1.png", "../image/red/R/redR2.png","../image/red/R/redR3.png", "../image/red/R/redR4.png"],
+                "walk_right": ["../image/red/R/redR1.png", "../image/red/R/redR2.png","../image/red/R/redR3.png", "../image/red/R/redR4.png"],
+                "idle": ["../image/red/R/redR1.png", "../image/red/R/redR2.png","../image/red/R/redR3.png", "../image/red/R/redR4.png"],
+                "death": ["../image/red/R/redR1.png", "../image/red/R/redR2.png","../image/red/R/redR3.png", "../image/red/R/redR4.png"],
+                "attack": ["../image/monster/attack1.png", "../image/monster/attack2.png"],
+                "death": ["../image/monster/death1.png", "../image/monster/death2.png"],
             }
         elif self.name == "Stone":
             return {
@@ -73,6 +75,8 @@ class Monster(Image):
                 "walk_right": ["../image/stone/R/StoneR1.png", "../image/stone/R/StoneR2.png", "../image/stone/R/StoneR3.png", "../image/stone/R/StoneR4.png", "../image/stone/R/StoneR5.png"],
                 "idle": ["../image/stone/R/StoneR1.png", "../image/stone/R/StoneR2.png", "../image/stone/R/StoneR3.png", "../image/stone/R/StoneR4.png", "../image/stone/R/StoneR5.png"],
                 "death": ["../image/stone/R/StoneR1.png", "../image/stone/R/StoneR2.png", "../image/stone/R/StoneR3.png", "../image/stone/R/StoneR4.png", "../image/stone/R/StoneR5.png"],
+                "attack": ["../image/monster/attack1.png", "../image/monster/attack2.png"],
+                "death": ["../image/monster/death1.png", "../image/monster/death2.png"],
             }
             
         elif self.name == "Golem":
@@ -81,6 +85,8 @@ class Monster(Image):
                 "walk_right": ["../image/golem/Idle/Golem1.png", "../image/golem/Idle/Golem2.png", "../image/golem/Idle/Golem3.png", "../image/golem/Idle/Golem4.png", "../image/golem/Idle/Golem5.png"],
                 "idle": ["../image/golem/Idle/Golem1.png", "../image/golem/Idle/Golem2.png", "../image/golem/Idle/Golem3.png", "../image/golem/Idle/Golem4.png", "../image/golem/Idle/Golem5.png"],
                 "death": ["../image/golem/Idle/Golem1.png", "../image/golem/Idle/Golem2.png", "../image/golem/Idle/Golem3.png", "../image/golem/Idle/Golem4.png", "../image/golem/Idle/Golem5.png"],
+                "attack": ["../image/monster/attack1.png", "../image/monster/attack2.png"],
+                "death": ["../image/monster/death1.png", "../image/monster/death2.png"],
             }
             
         elif self.name == "Dragon":
@@ -89,6 +95,8 @@ class Monster(Image):
                 "walk_right": ["../image/dragon/R/dragonR1.png", "../image/dragon/R/dragonR2.png", "../image/dragon/R/dragonR3.png", "../image/dragon/R/dragonR4.png", "../image/dragon/R/dragonR5.png"],
                 "idle": ["../image/dragon/R/dragonR1.png", "../image/dragon/R/dragonR2.png", "../image/dragon/R/dragonR3.png", "../image/dragon/R/dragonR4.png", "../image/dragon/R/dragonR5.png"],
                 "death": ["../image/dragon/R/dragonR1.png", "../image/dragon/R/dragonR2.png", "../image/dragon/R/dragonR3.png", "../image/dragon/R/dragonR4.png", "../image/dragon/R/dragonR5.png"],
+                "attack": ["../image/monster/attack1.png", "../image/monster/attack2.png"],
+                "death": ["../image/monster/death1.png", "../image/monster/death2.png"],
             }
         
     def update_animation(self, dt):
