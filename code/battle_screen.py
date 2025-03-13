@@ -184,16 +184,23 @@ class BattleScreen(Screen):
         self.message_label.text = f"Battle with {monster.name}!"
         self.player_image.source = player.sprite.source
         self.monster_image.source = monster.source
+        self.monster_animations = monster.load_default_animations()
+        self.death_frames = self.monster_animations.get("death", [])
+        
+        
         
         if monster.name == "Red":
             self.monster_image.size_hint = (0.2, 0.4)  
             self.monster_image.pos_hint = {'center_x': 0.7, 'center_y': 0.56}
+            
         elif monster.name == "Stone":
             self.monster_image.size_hint = (0.15, 0.26)  
             self.monster_image.pos_hint = {'center_x': 0.7, 'center_y': 0.49}
+            
         elif monster.name == "Golem":
             self.monster_image.size_hint = (0.3, 0.5)  
             self.monster_image.pos_hint = {'center_x': 0.8, 'center_y': 0.55}
+            
         elif monster.name == "Dragon":
             self.monster_image.size_hint = (0.35, 0.7)  
             self.monster_image.pos_hint = {'center_x': 0.7, 'center_y': 0.7}
@@ -254,11 +261,16 @@ class BattleScreen(Screen):
         if self.monster.hp <= 0:
             self.message_label.text = "You won the battle!"
             self.give_rewards()
+            self.play_animation(self.death_frames)
             self.monster.die()
-            Clock.schedule_once(self.back_to_game, 2)  
+            
+            if hasattr(self, 'on_monster_defeated'):
+                self.on_monster_defeated()
+                
+            Clock.schedule_once(self.back_to_game, 1.5)  
         elif self.player.hp <= 0:
             self.message_label.text = "You were defeated..."
-            Clock.schedule_once(self.back_to_game, 2) 
+            Clock.schedule_once(self.back_to_game, 1.5) 
 
     def give_rewards(self):
         self.player.hp = self.player.max_hp
@@ -267,3 +279,13 @@ class BattleScreen(Screen):
 
     def back_to_game(self, dt):
         self.parent.current = 'game'
+
+    def play_animation(self, frames):
+        def update_frame(dt):
+            if frames:
+                self.monster_image.source = frames.pop(0)
+                if frames:
+                    Clock.schedule_once(update_frame, 0.2)
+                else:
+                    self.monster_image.source = ""
+        update_frame(0)

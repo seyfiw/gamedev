@@ -76,18 +76,18 @@ class Monster(Image):
                 "walk_left": ["../image/red/L/redL1.png", "../image/red/L/redL2.png","../image/red/L/redL3.png", "../image/red/L/redL4.png"],
                 "walk_right": ["../image/red/R/redR1.png", "../image/red/R/redR2.png","../image/red/R/redR3.png", "../image/red/R/redR4.png"],
                 "idle": ["../image/red/R/redR1.png", "../image/red/R/redR2.png","../image/red/R/redR3.png", "../image/red/R/redR4.png"],
-                "death": ["../image/red/R/redR1.png", "../image/red/R/redR2.png","../image/red/R/redR3.png", "../image/red/R/redR4.png"],
-                "attack": ["../image/monster/attack1.png", "../image/monster/attack2.png"],
-                "death": ["../image/monster/death1.png", "../image/monster/death2.png"],
+                "death": ["../image/red/D/red_die1.png","../image/red/D/red_die2.png","../image/red/D/red_die3.png","../image/red/D/red_die4.png","../image/red/D/red_die5.png","../image/red/D/red_die6.png","../image/empty.png","../image/empty.png","../image/empty.png"],
+                #"attack": ["../image/red/D/red_die1.png", "../image/red/D/red_die2.png","../image/red/D/red_die2.png","../image/red/D/red_die3.png","../image/red/D/red_die4.png","../image/red/D/red_die5.png","../image/red/D/red_die6.png"],
+                
             }
         elif self.name == "Stone":
             return {
                 "walk_left": ["../image/stone/L/StoneL1.png", "../image/stone/L/StoneL2.png", "../image/stone/L/StoneL3.png", "../image/stone/L/StoneL4.png", "../image/stone/L/StoneL5.png"],
                 "walk_right": ["../image/stone/R/StoneR1.png", "../image/stone/R/StoneR2.png", "../image/stone/R/StoneR3.png", "../image/stone/R/StoneR4.png", "../image/stone/R/StoneR5.png"],
                 "idle": ["../image/stone/R/StoneR1.png", "../image/stone/R/StoneR2.png", "../image/stone/R/StoneR3.png", "../image/stone/R/StoneR4.png", "../image/stone/R/StoneR5.png"],
-                "death": ["../image/stone/R/StoneR1.png", "../image/stone/R/StoneR2.png", "../image/stone/R/StoneR3.png", "../image/stone/R/StoneR4.png", "../image/stone/R/StoneR5.png"],
+                "death": ["../image/stone/D/Stone_die1.png", "../image/stone/D/Stone_die2.png","../image/stone/D/Stone_die3.png","../image/stone/D/Stone_die4.png","../image/stone/D/Stone_die5.png","../image/stone/D/Stone_die6.png","../image/stone/D/Stone_die7.png","../image/empty.png","../image/empty.png","../image/empty.png"],
                 "attack": ["../image/monster/attack1.png", "../image/monster/attack2.png"],
-                "death": ["../image/monster/death1.png", "../image/monster/death2.png"],
+                
             }
             
         elif self.name == "Golem":
@@ -95,9 +95,9 @@ class Monster(Image):
                 "walk_left": ["../image/golem/Idle/Golem1.png", "../image/golem/Idle/Golem2.png", "../image/golem/Idle/Golem3.png", "../image/golem/Idle/Golem4.png", "../image/golem/Idle/Golem5.png"],
                 "walk_right": ["../image/golem/Idle/Golem1.png", "../image/golem/Idle/Golem2.png", "../image/golem/Idle/Golem3.png", "../image/golem/Idle/Golem4.png", "../image/golem/Idle/Golem5.png"],
                 "idle": ["../image/golem/Idle/Golem1.png", "../image/golem/Idle/Golem2.png", "../image/golem/Idle/Golem3.png", "../image/golem/Idle/Golem4.png", "../image/golem/Idle/Golem5.png"],
-                "death": ["../image/golem/Idle/Golem1.png", "../image/golem/Idle/Golem2.png", "../image/golem/Idle/Golem3.png", "../image/golem/Idle/Golem4.png", "../image/golem/Idle/Golem5.png"],
+                "death":  ["../image/golem/D/Golem_die1.png", "../image/golem/D/Golem_die2.png","../image/golem/D/Golem_die3.png","../image/golem/D/Golem_die4.png","../image/golem/D/Golem_die5.png","../image/golem/D/Golem_die6.png","../image/golem/D/Golem_die7.png","../image/empty.png","../image/empty.png","../image/empty.png"],
                 "attack": ["../image/monster/attack1.png", "../image/monster/attack2.png"],
-                "death": ["../image/monster/death1.png", "../image/monster/death2.png"],
+                
             }
             
         elif self.name == "Dragon":
@@ -105,9 +105,9 @@ class Monster(Image):
                 "walk_left": ["../image/dragon/L/dragonL1.png", "../image/dragon/L/dragonL2.png", "../image/dragon/L/dragonL3.png", "../image/dragon/L/dragonL4.png", "../image/dragon/L/dragonL5.png"],
                 "walk_right": ["../image/dragon/R/dragonR1.png", "../image/dragon/R/dragonR2.png", "../image/dragon/R/dragonR3.png", "../image/dragon/R/dragonR4.png", "../image/dragon/R/dragonR5.png"],
                 "idle": ["../image/dragon/R/dragonR1.png", "../image/dragon/R/dragonR2.png", "../image/dragon/R/dragonR3.png", "../image/dragon/R/dragonR4.png", "../image/dragon/R/dragonR5.png"],
-                "death": ["../image/dragon/R/dragonR1.png", "../image/dragon/R/dragonR2.png", "../image/dragon/R/dragonR3.png", "../image/dragon/R/dragonR4.png", "../image/dragon/R/dragonR5.png"],
+                "death":  ["../image/dragon/D/dragon_die1.png", "../image/dragon/D/dragon_die2.png","../image/dragon/D/dragon_die3.png","../image/dragon/D/dragon_die4.png","../image/dragon/D/dragon_die5.png","../image/dragon/D/dragon_die6.png","../image/empty.png","../image/empty.png","../image/empty.png"],
                 "attack": ["../image/monster/attack1.png", "../image/monster/attack2.png"],
-                "death": ["../image/monster/death1.png", "../image/monster/death2.png"],
+                
             }
         
     def update_animation(self, dt):

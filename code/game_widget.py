@@ -80,7 +80,7 @@ class GameWidget(Widget):
             battle_screen.on_monster_defeated = self.on_monster_defeated
             
     def on_monster_defeated(self):
-        if self.defeated_monsters < self.total_monsters:  # ตรวจสอบว่าไม่เกินจำนวนมอนสเตอร์ทั้งหมด
+        if self.defeated_monsters < self.total_monsters: 
             self.defeated_monsters += 1
             if self.defeated_monsters >= self.total_monsters:
                 self.show_win_game()
@@ -91,7 +91,7 @@ class GameWidget(Widget):
             
             main_layout = BoxLayout(orientation='vertical', padding=20, spacing=10)
             
-            main_layout.add_widget(Widget(size_hint=(1, 0.4)))  # ช่องว่างด้านบน
+            main_layout.add_widget(Widget(size_hint=(1, 0.4)))  
 
             center_layout = BoxLayout(orientation='vertical', size_hint=(1, 0.2))
             
