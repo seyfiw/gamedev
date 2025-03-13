@@ -106,13 +106,13 @@ class BattleScreen(Screen):
         self.layout.add_widget(self.mana_label)
         
         # Player  Monster
-        self.player_image = Image(size_hint=(0.5, 0.5), pos_hint={'center_x': 0.25, 'center_y': 0.5})
-        self.monster_image = Image(size_hint=(0.5, 0.5), pos_hint={'center_x': 0.75, 'center_y': 0.5})
+        self.player_image = Image(size_hint=(0.9, 0.9), pos_hint={'center_x': 0.25, 'center_y': 0.5})
+        self.monster_image = Image(size_hint=(0.9, 0.9), pos_hint={'center_x': 0.75, 'center_y': 0.5})
         self.layout.add_widget(self.player_image)
         self.layout.add_widget(self.monster_image)
 
 
-        self.button_layout = GridLayout(cols=3, rows=2, spacing=10, size_hint=(0.8, 0.2), pos_hint={"center_x": 0.5, "center_y": 0.1})
+        self.button_layout = GridLayout(cols=3, rows=2, spacing=10, size_hint=(0.9, 0.8), pos_hint={"center_x": 0.5, "center_y": 0.1})
         self.layout.add_widget(self.button_layout)
 
         # ปุ่ม Attack (ซ้ายบน)
