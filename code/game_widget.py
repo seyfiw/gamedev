@@ -86,61 +86,53 @@ class GameWidget(Widget):
                 self.show_win_game()
                         
     def show_win_game(self):
-        if not hasattr(self, 'win_game_shown'):  # ตรวจสอบว่าแสดงหน้าจอชนะเกมแล้วหรือยัง
-            self.win_game_shown = True  # ตั้งค่าสถานะว่าแสดงแล้ว
-
-            # สร้าง Layout หลัก
+        if not hasattr(self, 'win_game_shown'):  
+            self.win_game_shown = True  
+            
             main_layout = BoxLayout(orientation='vertical', padding=20, spacing=10)
             
-            # เพิ่มช่องว่างด้านบนเพื่อดันปุ่มลงมาอยู่ตรงกลาง
             main_layout.add_widget(Widget(size_hint=(1, 0.4)))  # ช่องว่างด้านบน
 
-            # สร้าง Layout สำหรับข้อความและปุ่ม
             center_layout = BoxLayout(orientation='vertical', size_hint=(1, 0.2))
             
-            # ข้อความ "You Win the Game!"
             win_label = Label(
                 text="You Win the Game!", 
                 font_size=40, 
-                color=(1, 1, 1, 1),  # สีขาว
+                color=(1, 1, 1, 1),  
                 bold=True,
                 size_hint=(1, 0.5))
             
             center_layout.add_widget(win_label)
 
-            # ปุ่ม Restart
             restart_button = Button(
                 text="Restart Game", 
                 size_hint=(1, 0.5),
-                background_color=(0, 0.7, 1, 1),  # สีฟ้า
-                color=(1, 1, 1, 1),  # สีขาว
+                background_color=(0, 0.7, 1, 1),  
+                color=(1, 1, 1, 1),  
                 font_size=20,
                 background_normal='',
                 background_down='',
                 border=(10, 10, 10, 10)
             )
             
-            restart_button.bind(on_press=self.restart_game)  # เชื่อมโยงฟังก์ชัน restart_game
+            restart_button.bind(on_press=self.restart_game) 
             main_layout.add_widget(restart_button)
 
-            self.clear_widgets()  # ลบ Widgets เดิมทั้งหมดในหน้าจอ
-            self.add_widget(main_layout)  # เพิ่ม Layout ใหม่สำหรับหน้าจอชนะเกม
+            self.clear_widgets() 
+            self.add_widget(main_layout)  
             
             
     def restart_game(self, instance):
-        # รีเซ็ตสถานะของเกม
         self.defeated_monsters = 0
         self.player.hp = self.player.max_hp
         self.player.mana = 50
 
-        # รีเซ็ตตำแหน่งผู้เล่น
         self.player.position = [self.map.size[0] // 2, self.map.size[1] // 2]  
         self.player.sprite.pos = (
             self.player.position[0] + self.map.background.pos[0],
             self.player.position[1] + self.map.background.pos[1]
         )
 
-        # รีเซ็ตมอนสเตอร์ทั้งหมด
         map_center_x = self.map.size[0] // 2
         map_center_y = self.map.size[1] // 2
         monster_positions = [
@@ -152,26 +144,25 @@ class GameWidget(Widget):
 
         for i, monster in enumerate(self.monsters):
             monster.hp = monster.max_hp
-            monster.world_position = list(monster_positions[i])  # รีเซ็ตตำแหน่งมอนสเตอร์
+            monster.world_position = list(monster_positions[i])  
             monster.pos = (
                 monster.world_position[0] + self.map.background.pos[0],
                 monster.world_position[1] + self.map.background.pos[1]
             )
-            if monster.parent is None:  # ตรวจสอบว่ามอนสเตอร์ไม่ได้อยู่ในหน้าจอแล้ว
-                self.add_widget(monster)  # เพิ่มมอนสเตอร์กลับเข้าไปในหน้าจอ
+            if monster.parent is None: 
+                self.add_widget(monster)  
 
-        # ปิดหน้าจอชนะเกมและกลับไปที่หน้าจอเกมหลัก
-        self.clear_widgets()  # ลบ Widgets ของหน้าจอชนะเกม
+        
+        self.clear_widgets()  
         self.add_widget(self.map.background)
         self.add_widget(self.player.sprite)
         for monster in self.monsters:
-            self.add_widget(monster)  # เพิ่มมอนสเตอร์กลับเข้าไปในหน้าจอ
+            self.add_widget(monster)  
 
-        # กลับไปที่หน้าจอเกมหลัก
         self.parent.current = 'game'
         
     def back_to_main_menu(self, instance):
-        self.parent.current = 'main_menu'  # กลับไปที่หน้าจอเมนูหลัก
+        self.parent.current = 'main_menu'  
 
     def update(self, dt):
         if "walk_left" in self.keyboard.pressed_keys:

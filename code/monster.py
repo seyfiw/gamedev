@@ -6,13 +6,13 @@ import random
 import math
 
 class Monster(Image):
-    def __init__(self, name, spawn_point, image_path, game_map, animations=None, **kwargs):
+    def __init__(self, name, spawn_point, image_path, game_map,size=(200, 200), animations=None, **kwargs):
         super().__init__(**kwargs)
         self.name = name
         self.spawn_point = spawn_point 
         self.source = image_path
         self.size_hint = (None, None)
-        self.size = (200, 200)
+        self.size = self.get_size()
         self.scale = 5.0
         self.allow_stretch = True  # อนุญาตให้ขยายภาพ
         self.keep_ratio = False  # ไม่ต้องรักษาอัตราส่วน
@@ -58,6 +58,17 @@ class Monster(Image):
         
         Clock.schedule_interval(self.move, 1 / 30)
         
+    def get_size(self):
+        if self.name == "Red":
+            return (200, 200)
+        elif self.name == "Stone":
+            return (150, 150)
+        elif self.name == "Golem":
+            return (200, 200)
+        elif self.name == "Dragon":
+            return (300, 300)
+        else:
+            return (200, 200) 
         
     def load_default_animations(self):
         if self.name == "Red":
