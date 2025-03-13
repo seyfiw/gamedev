@@ -134,40 +134,40 @@ class BattleScreen(Screen):
 
         # ปุ่ม Attack (ซ้ายบน)
         self.attack_button = ImageButtonWithText(
-            image_source="image/button/test.png",  
-            button_text="Attack"  
+            image_source="image/button/button_attack.png",  
+            button_text="="  
         )
         self.attack_button.bind(on_press=self.attack)
         self.button_layout.add_widget(self.attack_button)
 
         # ปุ่ม Fireball (ขวาบน)
         self.fireball_button = ImageButtonWithText(
-            image_source="image/button/test.png", 
-            button_text="Fireball (20 Damage, 10 Mana)" 
+            image_source="image/button/button_fireball.png", 
+            button_text="" 
         )
         self.fireball_button.bind(on_press=self.use_fireball)
         self.button_layout.add_widget(self.fireball_button)
 
         # ปุ่ม Heal (ซ้ายล่าง)
         self.heal_button = ImageButtonWithText(
-            image_source="image/button/test.png",  
-            button_text="Heal (30 HP, 15 Mana)"  
+            image_source="image/button/button_HP.png",  
+            button_text=""  
         )
         self.heal_button.bind(on_press=self.use_heal)
         self.button_layout.add_widget(self.heal_button)
 
         # ปุ่ม Defend (ขวาล่าง)
         self.defend_button = ImageButtonWithText(
-            image_source="image/button/test.png", 
-            button_text="Defend"  
+            image_source="image/button/button_defend.png", 
+            button_text=""  
         )
         self.defend_button.bind(on_press=self.defend)
         self.button_layout.add_widget(self.defend_button)
 
         # ปุ่ม Escape 
         self.escape_button = ImageButtonWithText(
-            image_source="image/button/test.png", 
-            button_text="Escape"  
+            image_source="image/button/button_escape.png", 
+            button_text=""  
         )
         self.escape_button.bind(on_press=self.escape)
         self.button_layout.add_widget(self.escape_button)
@@ -186,16 +186,16 @@ class BattleScreen(Screen):
         self.monster_image.source = monster.source
         
         if monster.name == "Red":
-            self.monster_image.size_hint = (0.2, 0.4)  # ขนาดสำหรับ Red
+            self.monster_image.size_hint = (0.2, 0.4)  
             self.monster_image.pos_hint = {'center_x': 0.7, 'center_y': 0.56}
         elif monster.name == "Stone":
-            self.monster_image.size_hint = (0.15, 0.26)  # ขนาดสำหรับ Stone
+            self.monster_image.size_hint = (0.15, 0.26)  
             self.monster_image.pos_hint = {'center_x': 0.7, 'center_y': 0.49}
         elif monster.name == "Golem":
-            self.monster_image.size_hint = (0.3, 0.5)  # ขนาดสำหรับ Golem
+            self.monster_image.size_hint = (0.3, 0.5)  
             self.monster_image.pos_hint = {'center_x': 0.8, 'center_y': 0.55}
         elif monster.name == "Dragon":
-            self.monster_image.size_hint = (0.35, 0.7)  # ขนาดสำหรับ Dragon
+            self.monster_image.size_hint = (0.35, 0.7)  
             self.monster_image.pos_hint = {'center_x': 0.7, 'center_y': 0.7}
 
     def update_hp_labels(self):
