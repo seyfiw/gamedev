@@ -66,54 +66,73 @@ class BattleScreen(Screen):
         self.background.pos = self.pos
         self.bind(size=self._update_background, pos=self._update_background)
 
-        # ใช้ BoxLayout เป็นหลัก
-        self.layout = BoxLayout(orientation='vertical', padding=10, spacing=10)
-        self.add_widget(self.layout)
+        self.main_layout = RelativeLayout()
+        self.add_widget(self.main_layout)
 
-        # ข้อความสถานะการต่อสู้
         self.message_label = Label(
             text="Turn-Based Battle", 
             font_size=30, 
             color=get_color_from_hex('#ECEFF4'), 
             bold=True,
-            size_hint=(1, 0.1)
+            size_hint=(1, 0.1),
+            pos_hint={'top': 1}
         )
-        self.layout.add_widget(self.message_label)
+        self.main_layout.add_widget(self.message_label)
 
         # HP และ Mana
         self.player_hp_label = Label(
             text="Player HP: 100", 
             font_size=20, 
             color=get_color_from_hex('#88C0D0'),
-            size_hint=(1, 0.1)
+            size_hint=(1, 0.1),
+            pos_hint={'top': 0.9}
         )
-        self.layout.add_widget(self.player_hp_label)
+        self.main_layout.add_widget(self.player_hp_label)
 
         self.monster_hp_label = Label(
             text="Monster HP: 50", 
             font_size=20, 
             color=get_color_from_hex('#BF616A'),
-            size_hint=(1, 0.1)
+            size_hint=(1, 0.1),
+            pos_hint={'top': 0.8}
         )
-        self.layout.add_widget(self.monster_hp_label)
+        self.main_layout.add_widget(self.monster_hp_label)
 
         self.mana_label = Label(
             text="Mana: 50", 
             font_size=20, 
             color=get_color_from_hex('#81A1C1'),
-            size_hint=(1, 0.1)
+            size_hint=(1, 0.1),
+            pos_hint={'top': 0.7}
         )
-        self.layout.add_widget(self.mana_label)
+        self.main_layout.add_widget(self.mana_label)
         
-        # Player  Monster
-        self.player_image = Image(size_hint=(0.9, 0.9), pos_hint={'center_x': 0.25, 'center_y': 0.5})
-        self.monster_image = Image(size_hint=(0.9, 0.9), pos_hint={'center_x': 0.75, 'center_y': 0.5})
-        self.layout.add_widget(self.player_image)
-        self.layout.add_widget(self.monster_image)
+        # Player และ Monster
+        self.player_image = Image(
+            size_hint=(0.15, 0.23),  
+            pos_hint={'center_x': 0.25, 'center_y': 0.44},
+            allow_stretch = True, 
+            keep_ratio = False  
+        )
+        self.main_layout.add_widget(self.player_image)
 
+        self.monster_image = Image(
+            size_hint=(0.3, 0.46),  
+            pos_hint={'center_x': 0.75, 'center_y': 0.5},
+            allow_stretch = True ,
+            keep_ratio = False  
+        )
+        self.main_layout.add_widget(self.monster_image)
 
-        self.button_layout = GridLayout(cols=3, rows=2, spacing=10, size_hint=(0.9, 0.8), pos_hint={"center_x": 0.5, "center_y": 0.1})
-        self.layout.add_widget(self.button_layout)
+        # ปุ่มต่างๆ
+        self.button_layout = GridLayout(
+            cols=3, 
+            rows=2, 
+            spacing=10, 
+            size_hint=(0.9, 0.3), 
+            pos_hint={"center_x": 0.5, "y": 0.05}
+        )
+        self.main_layout.add_widget(self.button_layout)
 
         # ปุ่ม Attack (ซ้ายบน)
         self.attack_button = ImageButtonWithText(
@@ -151,64 +170,9 @@ class BattleScreen(Screen):
         self.escape_button = ImageButtonWithText(
             image_source="image/button/test.png", 
             button_text="Escape"  
-            
         )
         self.escape_button.bind(on_press=self.escape)
         self.button_layout.add_widget(self.escape_button)
-        
-        
-    def play_animation(self, widget, animation_frames, duration=0.5):
-        anim = Animation(source=animation_frames[0], duration=duration)
-        for frame in animation_frames[1:]:
-            anim += Animation(source=frame, duration=duration)
-        anim.start(widget)
-
-    def attack(self, instance):
-        damageMonster = 10
-        damagePlayer = 5
-        self.monster.hp -= damageMonster
-        self.player.hp -= damagePlayer
-        if self.monster.hp < 0:
-            self.monster.hp = 0
-        self.update_hp_labels()
-        self.message_label.text = f"You attacked {self.monster.name} for {damageMonster} damage!"
-        self.play_animation(self.player_image, self.player.animations["attack"])
-        self.play_animation(self.monster_image, self.monster.animations["hit"])
-        self.check_battle_result()
-
-    def use_fireball(self, instance):
-        if self.player.mana >= self.player.skills["Fireball"]["mana_cost"]:
-            damage = self.player.skills["Fireball"]["damage"]
-            self.monster.hp -= damage
-            self.player.mana -= self.player.skills["Fireball"]["mana_cost"]
-            if self.monster.hp < 0:
-                self.monster.hp = 0
-            self.update_hp_labels()
-            self.update_mana_label()
-            self.message_label.text = f"You used Fireball and dealt {damage} damage!"
-            self.play_animation(self.player_image, self.player.animations["cast_fireball"])
-            self.play_animation(self.monster_image, self.monster.animations["hit"])
-        else:
-            self.message_label.text = "Not enough mana!"
-        self.check_battle_result()
-
-    def use_heal(self, instance):
-        if self.player.mana >= self.player.skills["Heal"]["mana_cost"]:
-            heal = self.player.skills["Heal"]["heal"]
-            self.player.hp += heal
-            if self.player.hp > self.player.max_hp:
-                self.player.hp = self.player.max_hp
-            self.player.mana -= self.player.skills["Heal"]["mana_cost"]
-            self.update_hp_labels()
-            self.update_mana_label()
-            self.message_label.text = f"You used Heal and recovered {heal} HP!"
-            self.play_animation(self.player_image, self.player.animations["heal"])
-        else:
-            self.message_label.text = "Not enough mana!"
-
-    def defend(self, instance):
-        self.message_label.text = "You defended against the monster's attack!"
-        self.play_animation(self.player_image, self.player.animations["defend"])
 
     def _update_background(self, instance, value):
         self.background.size = instance.size
@@ -222,7 +186,6 @@ class BattleScreen(Screen):
         self.message_label.text = f"Battle with {monster.name}!"
         self.player_image.source = player.sprite.source
         self.monster_image.source = monster.source
-        
 
     def update_hp_labels(self):
         self.player_hp_label.text = f"Player HP: {self.player.hp}/{self.player.max_hp}"
