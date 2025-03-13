@@ -124,6 +124,7 @@ class GameWidget(Widget):
             
     def restart_game(self, instance):
         self.defeated_monsters = 0
+        self.win_game_shown = False
         self.player.hp = self.player.max_hp
         self.player.mana = 50
 
