@@ -3,7 +3,7 @@ from kivy.vector import Vector
 from kivy.clock import Clock
 
 class Player:
-    def __init__(self, image_path, game_map, max_hp=100, max_mana=50):
+    def __init__(self, image_path, game_map, max_hp=100, max_mana=100):
         self.sprite = Image(source=image_path, size=(100, 100), size_hint=(None, None), allow_stretch=True, keep_ratio=False)
         self.position = [game_map.size[0] // 2, game_map.size[1] // 2]
         self.game_map = game_map
@@ -12,10 +12,10 @@ class Player:
         self.max_mana = max_mana  # เพิ่ม max_mana
         self.mana = max_mana
         self.skills = {
-            "Fireball": {"damage": 20, "mana_cost": 10},
+            "Fireball": {"damage": 20, "mana_cost": 30},
             "Heal": {"heal": 30, "mana_cost": 15},
         }
-        self.mana = 50  # เพิ่ม mana สำหรับใช้สกิล
+        self.mana = 100  
         self.animations = {
             "walk_left": ["../image/player/Wl1.png", "../image/player/Wl1.png","../image/player/Wl1.png","../image/player/Wl1.png","../image/player/Wl1.png",
                           "../image/player/Wl2.png", "../image/player/Wl3.png", "../image/player/Wl4.png", "../image/player/Wl4.png"

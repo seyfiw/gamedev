@@ -181,7 +181,7 @@ class ManaBar(Widget):
             else:
                 self.rect.texture = self.textures["mana_bar_5"]
                 
-            self.rect.size = (self.size[0] * mana_percent, self.size[1])
+            
 
             
 
@@ -320,6 +320,7 @@ class BattleScreen(Screen):
         self.player_mana_bar.size_hint = (None, None)
         self.player_mana_bar.size = (400, 60)  
         self.player_mana_bar.pos_hint = {'x': 0, 'top': 0.9}  
+        self.player_mana_bar.current_mana = self.player.mana
         self.main_layout.add_widget(self.player_mana_bar)
         
         # HP Bar สำหรับ player 
@@ -371,11 +372,15 @@ class BattleScreen(Screen):
                 self.monster_hp_bar.update_hp_bar()
 
     def update_mana_label(self):
-        self.mana_label.text = f" "
+        if self.player and hasattr(self, ' '):
+            self.player_mana_bar.current_mana = self.player.mana
+            self.player_mana_bar.update_mana_bar() 
+            self.mana_label.text = f"Mana: {self.player.mana}/{self.player.max_mana}"
+            
 
     def attack(self, instance):
         damageMonster = 10
-        damagePlayer = 5
+        damagePlayer = 10
         self.monster.hp -= damageMonster
         self.player.hp -= damagePlayer
         if self.monster.hp < 0:
@@ -387,8 +392,15 @@ class BattleScreen(Screen):
     def use_fireball(self, instance):
         if self.player.mana >= self.player.skills["Fireball"]["mana_cost"]:
             damage = self.player.skills["Fireball"]["damage"]
+            damagePlayer = 15
             self.monster.hp -= damage
+            self.player.hp -= damagePlayer
             self.player.mana -= self.player.skills["Fireball"]["mana_cost"]
+            
+            self.player_mana_bar.current_mana = self.player.mana
+            self.player_mana_bar.update_mana_bar()
+            self.update_mana_label()
+            
             if self.monster.hp < 0:
                 self.monster.hp = 0
             self.update_hp_labels()
@@ -434,8 +446,12 @@ class BattleScreen(Screen):
             Clock.schedule_once(self.back_to_game, 1.5) 
 
     def give_rewards(self):
-        self.player.hp = self.player.max_hp
+        self.player.hp = 20
         self.player.mana = 50
+        
+        self.player_mana_bar.current_mana = self.player.mana
+        self.player_mana_bar.update_mana_bar()
+        self.update_mana_label() 
 
     def back_to_game(self, dt):
         self.parent.current = 'game'
